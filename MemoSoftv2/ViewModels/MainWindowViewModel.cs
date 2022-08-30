@@ -1,6 +1,9 @@
 ﻿namespace MemoSoftv2.ViewModels
 {
+    using System;
+    using MemoSoftv2.Models;
     using MemoSoftv2.Models.DBs;
+    using Prism.Commands;
     using Prism.Mvvm;
 
     public class MainWindowViewModel : BindableBase
@@ -33,5 +36,10 @@
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
 
         public string SystemMessage { get => systemMessage; set => SetProperty(ref systemMessage, value); }
+
+        public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
+        {
+            commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
+        });
     }
 }
