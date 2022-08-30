@@ -27,6 +27,11 @@
                 commentDbContext = null;
                 SystemMessage = "PostgreSQL データベースへの接続に失敗しました";
             }
+
+            if (commentDbContext != null)
+            {
+                ReloadComment();
+            }
         }
 
         public string Title
@@ -45,5 +50,10 @@
         {
             commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
         });
+
+        public void ReloadComment()
+        {
+            Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
+        }
     }
 }

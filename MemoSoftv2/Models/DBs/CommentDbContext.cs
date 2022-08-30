@@ -1,6 +1,8 @@
 ﻿namespace MemoSoftv2.Models.DBs
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Microsoft.EntityFrameworkCore;
     using Npgsql;
 
@@ -17,6 +19,11 @@
         {
             Comments.Add(c);
             SaveChanges();
+        }
+
+        public List<Comment> GetComments()
+        {
+            return Comments.Where(c => true).ToList();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
