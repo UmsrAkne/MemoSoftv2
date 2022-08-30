@@ -53,7 +53,7 @@
 
         <StatusBar Grid.Row="3">
             <StatusBarItem>
-                <TextBlock Text="status bar" />
+                <TextBlock Text="{Binding SystemMessage}" />
             </StatusBarItem>
         </StatusBar>
 
