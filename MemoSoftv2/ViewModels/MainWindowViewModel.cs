@@ -49,6 +49,8 @@
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
             commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
+            InputText = string.Empty;
+
             ReloadComment();
         });
 
