@@ -11,10 +11,18 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="{Binding CreationDateTime}" />
-            <TextBlock Grid.Column="1" Text="{Binding Text}" />
+
+            <Border
+                Grid.Column="1"
+                Width="1"
+                Margin="5,0"
+                Background="Gray" />
+
+            <TextBlock Grid.Column="2" Text="{Binding Text}" />
 
         </Grid>
     </DataTemplate>
