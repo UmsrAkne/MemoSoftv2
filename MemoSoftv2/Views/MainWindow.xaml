@@ -50,15 +50,10 @@
 
         </TextBox>
 
-        <ListView Grid.Row="2" ItemTemplate="{StaticResource ListViewDateTemplate}">
-
-            <m:Comment Text="testComment1" />
-            <m:Comment Text="testComment2" />
-            <m:Comment Text="testComment3" />
-            <m:Comment Text="testComment4" />
-            <m:Comment Text="testComment5" />
-
-        </ListView>
+        <ListView
+            Grid.Row="2"
+            ItemTemplate="{StaticResource ListViewDateTemplate}"
+            ItemsSource="{Binding Comments}" />
 
         <StatusBar Grid.Row="3">
             <StatusBarItem>

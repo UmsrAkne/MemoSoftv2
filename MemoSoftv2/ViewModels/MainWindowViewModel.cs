@@ -1,6 +1,7 @@
 ﻿namespace MemoSoftv2.ViewModels
 {
     using System;
+    using System.Collections.ObjectModel;
     using MemoSoftv2.Models;
     using MemoSoftv2.Models.DBs;
     using Prism.Commands;
@@ -9,6 +10,7 @@
     public class MainWindowViewModel : BindableBase
     {
         private string title = "Prism Application";
+        private ObservableCollection<Comment> comments;
         private string inputText;
         private string systemMessage;
 
@@ -32,6 +34,8 @@
             get { return title; }
             set { SetProperty(ref title, value); }
         }
+
+        public ObservableCollection<Comment> Comments { get => comments; set => SetProperty(ref comments, value); }
 
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
 
