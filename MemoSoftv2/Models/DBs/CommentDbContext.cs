@@ -13,6 +13,12 @@
 
         public DbSet<Comment> Comments { get; set; }
 
+        public void AddComment(Comment c)
+        {
+            Comments.Add(c);
+            SaveChanges();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder();
