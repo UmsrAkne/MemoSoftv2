@@ -1,10 +1,16 @@
 ﻿namespace MemoSoftv2.Models.DBs
 {
+    using System;
     using Microsoft.EntityFrameworkCore;
     using Npgsql;
 
     public class CommentDbContext : DbContext
     {
+        public CommentDbContext()
+        {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        }
+
         public DbSet<Comment> Comments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
