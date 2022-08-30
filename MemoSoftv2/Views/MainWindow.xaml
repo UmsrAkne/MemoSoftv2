@@ -26,6 +26,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
@@ -34,7 +35,13 @@
             <MenuItem Header="File" />
         </Menu>
 
-        <ListView Grid.Row="1" ItemTemplate="{StaticResource ListViewDateTemplate}">
+        <TextBox
+            Grid.Row="1"
+            AcceptsReturn="True"
+            AcceptsTab="True"
+            Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" />
+
+        <ListView Grid.Row="2" ItemTemplate="{StaticResource ListViewDateTemplate}">
 
             <m:Comment Text="testComment1" />
             <m:Comment Text="testComment2" />
@@ -44,7 +51,7 @@
 
         </ListView>
 
-        <StatusBar Grid.Row="2">
+        <StatusBar Grid.Row="3">
             <StatusBarItem>
                 <TextBlock Text="status bar" />
             </StatusBarItem>
