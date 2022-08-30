@@ -5,6 +5,10 @@
 
     public class Comment
     {
+        public Comment()
+        {
+        }
+
         public Comment(string text, DateTime creationDatetime)
         {
             Text = text;
