@@ -37,4 +37,20 @@
         </Border>
     </DataTemplate>
 
+    <Style x:Key="ListViewItemContainerStyle" TargetType="ListViewItem">
+        <Setter Property="Tag" Value="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListView}}" />
+
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                    <MenuItem
+                        Command="{Binding EditCommentCommand}"
+                        CommandParameter="{Binding PlacementTarget.Content, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                        Header="コメントを編集する" />
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
 </ResourceDictionary>

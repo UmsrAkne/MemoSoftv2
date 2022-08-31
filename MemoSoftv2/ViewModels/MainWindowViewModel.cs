@@ -13,6 +13,7 @@
         private ObservableCollection<Comment> comments;
         private string inputText;
         private string systemMessage;
+        private Comment editingComment;
 
         private CommentDbContext commentDbContext = new CommentDbContext();
 
@@ -52,6 +53,12 @@
             InputText = string.Empty;
 
             ReloadCommentCommand.Execute();
+        });
+
+        public DelegateCommand<Comment> EditCommentCommand => new DelegateCommand<Comment>((comment) =>
+        {
+            InputText = comment.Text;
+            editingComment = comment;
         });
 
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
