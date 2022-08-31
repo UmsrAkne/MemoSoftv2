@@ -72,6 +72,16 @@
             editingComment = comment;
         });
 
+        public DelegateCommand CancelEditCommentCommand => new DelegateCommand(() =>
+        {
+            if (editingComment != null)
+            {
+                editingComment.IsEditing = false;
+                editingComment = null;
+                InputText = string.Empty;
+            }
+        });
+
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
         {
             Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
