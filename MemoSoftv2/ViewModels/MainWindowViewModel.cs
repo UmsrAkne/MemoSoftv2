@@ -30,7 +30,7 @@
 
             if (commentDbContext != null)
             {
-                ReloadComment();
+                ReloadCommentCommand.Execute();
             }
         }
 
@@ -51,12 +51,17 @@
             commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
             InputText = string.Empty;
 
-            ReloadComment();
+            ReloadCommentCommand.Execute();
         });
 
-        public void ReloadComment()
+        public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
         {
             Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
-        }
+        });
+
+        public DelegateCommand ExitCommand => new DelegateCommand(() =>
+        {
+            System.Windows.Application.Current.Shutdown();
+        });
     }
 }
