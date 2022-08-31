@@ -14,6 +14,7 @@
         private string inputText;
         private string systemMessage;
         private Comment editingComment;
+        private bool isTextBoxFocused;
 
         private CommentDbContext commentDbContext = new CommentDbContext();
 
@@ -46,6 +47,8 @@
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
 
         public string SystemMessage { get => systemMessage; set => SetProperty(ref systemMessage, value); }
+
+        public bool IsTextBoxFocused { get => isTextBoxFocused; set => SetProperty(ref isTextBoxFocused, value); }
 
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
@@ -85,6 +88,13 @@
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
         {
             Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
+        });
+
+        public DelegateCommand FocusToTextBoxCommand => new DelegateCommand(() =>
+        {
+            // 元から true である場合、フォーカスが移動しないので、一度 false にセットする。
+            IsTextBoxFocused = false;
+            IsTextBoxFocused = true;
         });
 
         public DelegateCommand ExitCommand => new DelegateCommand(() =>

@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:MemoSoftv2.Models.Converters">
+    xmlns:converters="clr-namespace:MemoSoftv2.Models.Converters"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
 
     <DataTemplate x:Key="ListViewDateTemplate">
 
@@ -56,7 +57,14 @@
                     <MenuItem
                         Command="{Binding EditCommentCommand}"
                         CommandParameter="{Binding PlacementTarget.Content, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                        Header="コメントを編集する" />
+                        Header="コメントを編集する">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding FocusToTextBoxCommand}" />
+
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
                 </ContextMenu>
             </Setter.Value>
         </Setter>
