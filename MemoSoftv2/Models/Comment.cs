@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Comment
     {
@@ -24,5 +25,8 @@
 
         [Required]
         public DateTime CreationDateTime { get; set; } = DateTime.Now;
+
+        [NotMapped]
+        public bool IsEditing { get; set; }
     }
 }
