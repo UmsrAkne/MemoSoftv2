@@ -49,8 +49,18 @@
 
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
-            commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
-            InputText = string.Empty;
+            if (editingComment == null)
+            {
+                commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
+                InputText = string.Empty;
+            }
+            else
+            { // コメント編集中の場合
+                editingComment.Text = InputText;
+                editingComment.IsEditing = false;
+                editingComment = null;
+                commentDbContext.SaveChanges();
+            }
 
             ReloadCommentCommand.Execute();
         });
@@ -58,6 +68,7 @@
         public DelegateCommand<Comment> EditCommentCommand => new DelegateCommand<Comment>((comment) =>
         {
             InputText = comment.Text;
+            comment.IsEditing = true;
             editingComment = comment;
         });
 
