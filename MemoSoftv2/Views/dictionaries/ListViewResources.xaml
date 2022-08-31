@@ -10,6 +10,16 @@
         </DataTemplate.Resources>
 
         <Border BorderBrush="LightGray" BorderThickness="0,0,0,1">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                            <Setter Property="Background" Value="LightPink" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
             <Grid>
                 <Grid.Resources>
                     <Style TargetType="TextBlock">
