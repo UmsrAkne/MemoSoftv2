@@ -23,6 +23,10 @@
         </ResourceDictionary>
     </Window.Resources>
 
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding CancelEditCommentCommand}" />
+    </Window.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -40,6 +44,7 @@
 
         <TextBox
             Grid.Row="1"
+            m:FocusExtension.IsFocused="{Binding IsTextBoxFocused}"
             AcceptsReturn="True"
             AcceptsTab="True"
             Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}">
@@ -56,6 +61,7 @@
         <ListView
             Grid.Row="2"
             HorizontalContentAlignment="Stretch"
+            ItemContainerStyle="{StaticResource ListViewItemContainerStyle}"
             ItemTemplate="{StaticResource ListViewDateTemplate}"
             ItemsSource="{Binding Comments}" />
 

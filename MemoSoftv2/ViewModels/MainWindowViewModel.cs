@@ -13,6 +13,8 @@
         private ObservableCollection<Comment> comments;
         private string inputText;
         private string systemMessage;
+        private Comment editingComment;
+        private bool isTextBoxFocused;
 
         private CommentDbContext commentDbContext = new CommentDbContext();
 
@@ -46,17 +48,53 @@
 
         public string SystemMessage { get => systemMessage; set => SetProperty(ref systemMessage, value); }
 
+        public bool IsTextBoxFocused { get => isTextBoxFocused; set => SetProperty(ref isTextBoxFocused, value); }
+
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
-            commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
-            InputText = string.Empty;
+            if (editingComment == null)
+            {
+                commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
+                InputText = string.Empty;
+            }
+            else
+            { // コメント編集中の場合
+                editingComment.Text = InputText;
+                editingComment.IsEditing = false;
+                editingComment = null;
+                commentDbContext.SaveChanges();
+            }
 
             ReloadCommentCommand.Execute();
+        });
+
+        public DelegateCommand<Comment> EditCommentCommand => new DelegateCommand<Comment>((comment) =>
+        {
+            InputText = comment.Text;
+            comment.IsEditing = true;
+            editingComment = comment;
+        });
+
+        public DelegateCommand CancelEditCommentCommand => new DelegateCommand(() =>
+        {
+            if (editingComment != null)
+            {
+                editingComment.IsEditing = false;
+                editingComment = null;
+                InputText = string.Empty;
+            }
         });
 
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
         {
             Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
+        });
+
+        public DelegateCommand FocusToTextBoxCommand => new DelegateCommand(() =>
+        {
+            // 元から true である場合、フォーカスが移動しないので、一度 false にセットする。
+            IsTextBoxFocused = false;
+            IsTextBoxFocused = true;
         });
 
         public DelegateCommand ExitCommand => new DelegateCommand(() =>

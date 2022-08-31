@@ -2,9 +2,13 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using Prism.Mvvm;
 
-    public class Comment
+    public class Comment : BindableBase
     {
+        private bool isEditing;
+
         public Comment()
         {
         }
@@ -24,5 +28,8 @@
 
         [Required]
         public DateTime CreationDateTime { get; set; } = DateTime.Now;
+
+        [NotMapped]
+        public bool IsEditing { get => isEditing; set => SetProperty(ref isEditing, value); }
     }
 }
