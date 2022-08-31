@@ -32,7 +32,10 @@
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0">
-            <MenuItem Header="File" />
+            <MenuItem Header="File">
+                <MenuItem Command="{Binding ExitCommand}" Header="Exit" />
+                <MenuItem Command="{Binding ReloadCommentCommand}" Header="Reload" />
+            </MenuItem>
         </Menu>
 
         <TextBox
