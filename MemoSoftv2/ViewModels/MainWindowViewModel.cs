@@ -75,6 +75,12 @@
             editingComment = comment;
         });
 
+        public DelegateCommand<Comment> AddFavoriteCommentCommand => new DelegateCommand<Comment>((comment) =>
+        {
+            comment.IsFavorite = !comment.IsFavorite;
+            commentDbContext.SaveChanges();
+        });
+
         public DelegateCommand CancelEditCommentCommand => new DelegateCommand(() =>
         {
             if (editingComment != null)
