@@ -15,6 +15,8 @@
 
         public DbSet<Comment> Comments { get; set; }
 
+        public int SearchLimitCount { get; set; } = 100;
+
         public void AddComment(Comment c)
         {
             Comments.Add(c);
@@ -23,7 +25,10 @@
 
         public List<Comment> GetComments()
         {
-            return Comments.Where(c => true).ToList();
+            return Comments.Where(c => true)
+                .OrderByDescending(c => c.CreationDateTime)
+                .Take(SearchLimitCount)
+                .ToList();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
