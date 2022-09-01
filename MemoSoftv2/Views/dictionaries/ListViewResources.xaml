@@ -33,20 +33,34 @@
                 </Grid.Resources>
 
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15" />
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="{Binding CreationDateTime, Converter={StaticResource DateTimeConverter}}" />
+                <TextBlock>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                    <Setter Property="Text" Value="#" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <TextBlock Grid.Column="1" Text="{Binding CreationDateTime, Converter={StaticResource DateTimeConverter}}" />
 
                 <Border
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Width="1"
                     Margin="5,0"
                     Background="Gray" />
 
-                <TextBlock Grid.Column="2" Text="{Binding Text}" />
+                <TextBlock Grid.Column="3" Text="{Binding Text}" />
 
             </Grid>
         </Border>
@@ -58,6 +72,11 @@
         <Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu DataContext="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                    <MenuItem
+                        Command="{Binding AddFavoriteCommentCommand}"
+                        CommandParameter="{Binding PlacementTarget.Content, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                        Header="お気に入りコメント" />
+
                     <MenuItem
                         Command="{Binding EditCommentCommand}"
                         CommandParameter="{Binding PlacementTarget.Content, RelativeSource={RelativeSource AncestorType=ContextMenu}}"

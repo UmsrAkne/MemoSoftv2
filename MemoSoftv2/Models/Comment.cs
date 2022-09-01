@@ -8,6 +8,7 @@
     public class Comment : BindableBase
     {
         private bool isEditing;
+        private bool isFavorite;
 
         public Comment()
         {
@@ -28,6 +29,9 @@
 
         [Required]
         public DateTime CreationDateTime { get; set; } = DateTime.Now;
+
+        [Required]
+        public bool IsFavorite { get => isFavorite; set => SetProperty(ref isFavorite, value); }
 
         [NotMapped]
         public bool IsEditing { get => isEditing; set => SetProperty(ref isEditing, value); }
