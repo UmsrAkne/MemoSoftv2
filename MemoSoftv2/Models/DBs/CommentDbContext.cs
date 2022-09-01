@@ -25,10 +25,18 @@
 
         public List<Comment> GetComments()
         {
-            return Comments.Where(c => true)
+            var favoriteComments = Comments.Where(c => c.IsFavorite)
                 .OrderByDescending(c => c.CreationDateTime)
                 .Take(SearchLimitCount)
                 .ToList();
+
+            var notFavoriteComments = Comments.Where(c => !c.IsFavorite)
+                .OrderByDescending(c => c.CreationDateTime)
+                .Take(SearchLimitCount)
+                .ToList();
+
+            favoriteComments.AddRange(notFavoriteComments);
+            return favoriteComments;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

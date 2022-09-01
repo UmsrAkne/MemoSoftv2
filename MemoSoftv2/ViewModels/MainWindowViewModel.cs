@@ -79,6 +79,7 @@
         {
             comment.IsFavorite = !comment.IsFavorite;
             commentDbContext.SaveChanges();
+            ReloadCommentCommand.Execute();
         });
 
         public DelegateCommand CancelEditCommentCommand => new DelegateCommand(() =>
