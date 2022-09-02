@@ -63,7 +63,8 @@
             HorizontalContentAlignment="Stretch"
             ItemContainerStyle="{StaticResource ListViewItemContainerStyle}"
             ItemTemplate="{StaticResource ListViewDateTemplate}"
-            ItemsSource="{Binding Comments}" />
+            ItemsSource="{Binding Comments}"
+            SelectedItem="{Binding SelectionComment}" />
 
         <StatusBar Grid.Row="3">
             <StatusBarItem>

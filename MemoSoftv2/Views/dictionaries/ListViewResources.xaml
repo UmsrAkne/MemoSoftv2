@@ -88,6 +88,55 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
+
+                    <MenuItem CommandParameter="{Binding PlacementTarget.Content, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="コメントの背景色を変更する">
+
+                        <MenuItem.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="Width" Value="40" />
+                                <Setter Property="Height" Value="15" />
+                                <Setter Property="Background" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=MenuItem}}" />
+                            </Style>
+
+                            <Style TargetType="MenuItem">
+                                <Setter Property="CommandParameter" Value="{Binding Foreground, RelativeSource={RelativeSource Mode=Self}}" />
+                                <Setter Property="Command" Value="{Binding ChangeBackgroundColorCommand}" />
+                            </Style>
+                        </MenuItem.Resources>
+
+                        <!--
+                            コマンドを実行するのにカラーオブジェクトが必要
+                            しかし、ラベルの Background にカラーを設定すると、MenuItem のコマンドパラメーターにカラーを入力できない
+                            MenuItem の Background にカラーを入力すると、マウスオーバーの際に背景色が変化してしまうためこちらも使えない。
+                            よって、表示に影響しない MenuItem.Foreground にカラーをセット。
+                            Label 側は RelativeSource を使って MenuItem のカラーを検索することで共通コードを削除。
+                        -->
+
+                        <MenuItem Foreground="White">
+                            <MenuItem.Header>
+                                <Label />
+                            </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem Foreground="WhiteSmoke">
+                            <MenuItem.Header>
+                                <Label />
+                            </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem Foreground="LightGray">
+                            <MenuItem.Header>
+                                <Label />
+                            </MenuItem.Header>
+                        </MenuItem>
+
+                        <MenuItem Foreground="DarkGray">
+                            <MenuItem.Header>
+                                <Label />
+                            </MenuItem.Header>
+                        </MenuItem>
+
+                    </MenuItem>
                 </ContextMenu>
             </Setter.Value>
         </Setter>
