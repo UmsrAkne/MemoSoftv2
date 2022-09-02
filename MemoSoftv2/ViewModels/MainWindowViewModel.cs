@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.Windows.Media;
     using MemoSoftv2.Models;
     using MemoSoftv2.Models.DBs;
     using Prism.Commands;
@@ -14,6 +15,7 @@
         private string inputText;
         private string systemMessage;
         private Comment editingComment;
+        private Comment selectionComment;
         private bool isTextBoxFocused;
 
         private CommentDbContext commentDbContext = new CommentDbContext();
@@ -49,6 +51,8 @@
         public string SystemMessage { get => systemMessage; set => SetProperty(ref systemMessage, value); }
 
         public bool IsTextBoxFocused { get => isTextBoxFocused; set => SetProperty(ref isTextBoxFocused, value); }
+
+        public Comment SelectionComment { get => selectionComment; set => SetProperty(ref selectionComment, value); }
 
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
@@ -102,6 +106,13 @@
             // 元から true である場合、フォーカスが移動しないので、一度 false にセットする。
             IsTextBoxFocused = false;
             IsTextBoxFocused = true;
+        });
+
+        public DelegateCommand<object> ChangeBackgroundColorCommand => new DelegateCommand<object>((olorBrush) =>
+        {
+            var mediaColor = ((SolidColorBrush)olorBrush).Color;
+            SelectionComment.BackgroundColorArgb = System.Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B).ToArgb();
+            commentDbContext.SaveChanges();
         });
 
         public DelegateCommand ExitCommand => new DelegateCommand(() =>

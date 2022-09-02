@@ -3,12 +3,15 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Drawing;
     using Prism.Mvvm;
 
     public class Comment : BindableBase
     {
         private bool isEditing;
         private bool isFavorite;
+        private int backgroundColorArgb = Color.White.ToArgb();
+        private int numIndent;
 
         public Comment()
         {
@@ -32,6 +35,12 @@
 
         [Required]
         public bool IsFavorite { get => isFavorite; set => SetProperty(ref isFavorite, value); }
+
+        [Required]
+        public int BackgroundColorArgb { get => backgroundColorArgb; set => SetProperty(ref backgroundColorArgb, value); }
+
+        [Required]
+        public int NumIndent { get => numIndent; set => SetProperty(ref numIndent, value); }
 
         [NotMapped]
         public bool IsEditing { get => isEditing; set => SetProperty(ref isEditing, value); }
