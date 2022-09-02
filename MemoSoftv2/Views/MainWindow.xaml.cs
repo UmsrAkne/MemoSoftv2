@@ -1,7 +1,7 @@
-﻿using System.Windows;
-
-namespace MemoSoftv2.Views
+﻿namespace MemoSoftv2.Views
 {
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
