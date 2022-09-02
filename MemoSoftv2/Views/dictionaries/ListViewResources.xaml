@@ -8,10 +8,12 @@
 
         <DataTemplate.Resources>
             <converters:DateTimeConverter x:Key="DateTimeConverter" />
+            <converters:ColorBrushConverter x:Key="ColorBrushConverter" />
         </DataTemplate.Resources>
 
         <Border
             Padding="0,0,0,2"
+            Background="{Binding BackgroundColorArgb, Converter={StaticResource ColorBrushConverter}}"
             BorderBrush="LightGray"
             BorderThickness="0,0,0,1">
 
