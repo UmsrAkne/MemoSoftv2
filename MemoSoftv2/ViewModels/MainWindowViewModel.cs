@@ -10,7 +10,7 @@
 
     public class MainWindowViewModel : BindableBase
     {
-        private string title = "Prism Application";
+        private string title = "MemoSoft v2";
         private ObservableCollection<Comment> comments;
         private string inputText;
         private string systemMessage;
