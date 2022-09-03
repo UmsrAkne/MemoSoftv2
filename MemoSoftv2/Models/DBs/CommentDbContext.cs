@@ -27,6 +27,12 @@
             SaveChanges();
         }
 
+        public void AddTag(Tag tag)
+        {
+            Tags.Add(tag);
+            SaveChanges();
+        }
+
         public List<Comment> GetComments()
         {
             var favoriteComments = Comments.Where(c => c.IsFavorite)

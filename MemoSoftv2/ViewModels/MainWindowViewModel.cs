@@ -56,26 +56,31 @@
 
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
-            if (editingComment == null)
+            if (string.IsNullOrWhiteSpace(InputText))
             {
-                if (!string.IsNullOrWhiteSpace(InputText))
-                {
-                    commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
-                    InputText = string.Empty;
-                }
-            }
-            else
-            {
-                // コメント編集中の場合
-                if (!string.IsNullOrWhiteSpace(InputText))
-                {
-                    editingComment.Text = InputText;
-                    editingComment.IsEditing = false;
-                    editingComment = null;
-                    commentDbContext.SaveChanges();
-                }
+                return;
             }
 
+            if (Mode == Mode.Post)
+            {
+                commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
+            }
+            else if (Mode == Mode.Edit)
+            {
+                // コメント編集中の場合
+                editingComment.Text = InputText;
+                editingComment.IsEditing = false;
+                editingComment = null;
+                commentDbContext.SaveChanges();
+            }
+            else if (Mode == Mode.TagAddition)
+            {
+                commentDbContext.AddTag(new Tag() { Name = InputText });
+            }
+
+            InputText = string.Empty;
+            SystemMessage = string.Empty;
+            Mode = Mode.Post;
             ReloadCommentCommand.Execute();
         });
 
@@ -84,6 +89,7 @@
             InputText = comment.Text;
             comment.IsEditing = true;
             editingComment = comment;
+            Mode = Mode.Edit;
         });
 
         public DelegateCommand<Comment> AddFavoriteCommentCommand => new DelegateCommand<Comment>((comment) =>
@@ -122,9 +128,17 @@
             commentDbContext.SaveChanges();
         });
 
+        public DelegateCommand StartTagAdditionModeCommand => new DelegateCommand(() =>
+        {
+            SystemMessage = "タグをテキストボックスに入力してください";
+            Mode = Mode.TagAddition;
+        });
+
         public DelegateCommand ExitCommand => new DelegateCommand(() =>
         {
             System.Windows.Application.Current.Shutdown();
         });
+
+        private Mode Mode { get; set; } = Mode.Post;
     }
 }
