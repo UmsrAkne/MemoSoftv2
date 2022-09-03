@@ -114,28 +114,134 @@
                             Label 側は RelativeSource を使って MenuItem のカラーを検索することで共通コードを削除。
                         -->
 
-                        <MenuItem Foreground="White">
-                            <MenuItem.Header>
-                                <Label />
-                            </MenuItem.Header>
+                        <MenuItem Header="Grayscale">
+                            <MenuItem.Style>
+                                <Style />
+                            </MenuItem.Style>
+
+                            <MenuItem Foreground="White">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="WhiteSmoke">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="LightGray">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="DarkGray">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
                         </MenuItem>
 
-                        <MenuItem Foreground="WhiteSmoke">
-                            <MenuItem.Header>
-                                <Label />
-                            </MenuItem.Header>
-                        </MenuItem>
+                        <MenuItem Header="Pastel color">
 
-                        <MenuItem Foreground="LightGray">
-                            <MenuItem.Header>
-                                <Label />
-                            </MenuItem.Header>
-                        </MenuItem>
+                            <MenuItem Foreground="Snow">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
 
-                        <MenuItem Foreground="DarkGray">
-                            <MenuItem.Header>
-                                <Label />
-                            </MenuItem.Header>
+                            <MenuItem Foreground="GhostWhite">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="MintCream">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="Azure">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="Ivory">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="FloralWhite">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="AliceBlue">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="LavenderBlush">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="SeaShell">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="Honeydew">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="LightCyan">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="LightYellow">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="OldLace">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="Cornsilk">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="Linen">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
+                            <MenuItem Foreground="LemonChiffon">
+                                <MenuItem.Header>
+                                    <Label />
+                                </MenuItem.Header>
+                            </MenuItem>
+
                         </MenuItem>
 
                     </MenuItem>
