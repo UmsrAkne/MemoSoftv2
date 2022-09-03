@@ -10,7 +10,7 @@
 
     public class MainWindowViewModel : BindableBase
     {
-        private string title = "Prism Application";
+        private string title = "MemoSoft v2";
         private ObservableCollection<Comment> comments;
         private string inputText;
         private string systemMessage;
@@ -58,15 +58,22 @@
         {
             if (editingComment == null)
             {
-                commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
-                InputText = string.Empty;
+                if (!string.IsNullOrWhiteSpace(InputText))
+                {
+                    commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
+                    InputText = string.Empty;
+                }
             }
             else
-            { // コメント編集中の場合
-                editingComment.Text = InputText;
-                editingComment.IsEditing = false;
-                editingComment = null;
-                commentDbContext.SaveChanges();
+            {
+                // コメント編集中の場合
+                if (!string.IsNullOrWhiteSpace(InputText))
+                {
+                    editingComment.Text = InputText;
+                    editingComment.IsEditing = false;
+                    editingComment = null;
+                    commentDbContext.SaveChanges();
+                }
             }
 
             ReloadCommentCommand.Execute();

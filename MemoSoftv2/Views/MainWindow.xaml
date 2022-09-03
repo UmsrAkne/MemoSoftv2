@@ -20,6 +20,10 @@
                 <Setter Property="FontSize" Value="14" />
             </Style>
 
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
         </ResourceDictionary>
     </Window.Resources>
 
