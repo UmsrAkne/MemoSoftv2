@@ -15,6 +15,10 @@
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<TagMap> TagMaps { get; set; }
+
         public int SearchLimitCount { get; set; } = 100;
 
         public void AddComment(Comment c)
