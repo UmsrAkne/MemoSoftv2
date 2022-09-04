@@ -15,11 +15,32 @@
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<TagMap> TagMaps { get; set; }
+
         public int SearchLimitCount { get; set; } = 100;
 
         public void AddComment(Comment c)
         {
             Comments.Add(c);
+            SaveChanges();
+        }
+
+        public void AddTag(Tag tag)
+        {
+            Tags.Add(tag);
+            SaveChanges();
+        }
+
+        public void AddTagMap(TagMap tagmap)
+        {
+            if (TagMaps.Any(tm => tagmap.TagId == tm.TagId && tm.CommentId == tagmap.CommentId))
+            {
+                return;
+            }
+
+            TagMaps.Add(tagmap);
             SaveChanges();
         }
 
@@ -36,7 +57,40 @@
                 .ToList();
 
             favoriteComments.AddRange(notFavoriteComments);
+
+            // タグマップテーブルとタグテーブルを結合する。戻ってくるリストは匿名型
+            var tags = TagMaps.Join(
+                Tags,
+                tm => tm.TagId,
+                t => t.Id,
+                (tm, t) => new { tm.Id, tm.CommentId, t.Name, });
+
+            // GroupBy で結合したタグテーブルを CommentId でグルーピング
+            var groupingTags = tags.GroupBy(t => t.CommentId);
+
+            // CommentId 一つに対して付いているタグを結合して一つの文字列にする
+            var tagNamesTable = groupingTags.Select(
+                x => new
+                {
+                    commentId = x.Key,
+                    name = string.Join(", ", x.OrderBy(a => a.Name).Select(a => a.Name)),
+                });
+
+            // 内部結合でタグがついているコメントのリストを作成して ForEach
+            favoriteComments.Join(
+                tagNamesTable,
+                c => c.Id,
+                t => t.commentId,
+                (c, t) => new { comment = c, tag = t })
+                .ToList()
+                .ForEach(c => c.comment.Tag = c.tag.name);
+
             return favoriteComments;
+        }
+
+        public List<Tag> GetTags()
+        {
+            return Tags.Where(t => true).ToList();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

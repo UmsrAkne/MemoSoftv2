@@ -1,6 +1,7 @@
 ﻿namespace MemoSoftv2.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Windows.Media;
     using MemoSoftv2.Models;
@@ -12,6 +13,7 @@
     {
         private string title = "MemoSoft v2";
         private ObservableCollection<Comment> comments;
+        private List<Tag> tags;
         private string inputText;
         private string systemMessage;
         private Comment editingComment;
@@ -46,6 +48,8 @@
 
         public ObservableCollection<Comment> Comments { get => comments; set => SetProperty(ref comments, value); }
 
+        public List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
+
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
 
         public string SystemMessage { get => systemMessage; set => SetProperty(ref systemMessage, value); }
@@ -56,26 +60,31 @@
 
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
-            if (editingComment == null)
+            if (string.IsNullOrWhiteSpace(InputText))
             {
-                if (!string.IsNullOrWhiteSpace(InputText))
-                {
-                    commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
-                    InputText = string.Empty;
-                }
-            }
-            else
-            {
-                // コメント編集中の場合
-                if (!string.IsNullOrWhiteSpace(InputText))
-                {
-                    editingComment.Text = InputText;
-                    editingComment.IsEditing = false;
-                    editingComment = null;
-                    commentDbContext.SaveChanges();
-                }
+                return;
             }
 
+            if (Mode == Mode.Post)
+            {
+                commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
+            }
+            else if (Mode == Mode.Edit)
+            {
+                // コメント編集中の場合
+                editingComment.Text = InputText;
+                editingComment.IsEditing = false;
+                editingComment = null;
+                commentDbContext.SaveChanges();
+            }
+            else if (Mode == Mode.TagAddition)
+            {
+                commentDbContext.AddTag(new Tag() { Name = InputText });
+            }
+
+            InputText = string.Empty;
+            SystemMessage = string.Empty;
+            Mode = Mode.Post;
             ReloadCommentCommand.Execute();
         });
 
@@ -84,6 +93,7 @@
             InputText = comment.Text;
             comment.IsEditing = true;
             editingComment = comment;
+            Mode = Mode.Edit;
         });
 
         public DelegateCommand<Comment> AddFavoriteCommentCommand => new DelegateCommand<Comment>((comment) =>
@@ -106,6 +116,7 @@
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
         {
             Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
+            Tags = commentDbContext.GetTags();
         });
 
         public DelegateCommand FocusToTextBoxCommand => new DelegateCommand(() =>
@@ -122,9 +133,28 @@
             commentDbContext.SaveChanges();
         });
 
+        public DelegateCommand StartTagAdditionModeCommand => new DelegateCommand(() =>
+        {
+            SystemMessage = "タグをテキストボックスに入力してください";
+            Mode = Mode.TagAddition;
+        });
+
         public DelegateCommand ExitCommand => new DelegateCommand(() =>
         {
             System.Windows.Application.Current.Shutdown();
         });
+
+        public DelegateCommand<Tag> AttachTagCommand => new DelegateCommand<Tag>((param) =>
+        {
+            var tagMap = new TagMap()
+            {
+                CommentId = SelectionComment.Id,
+                TagId = param.Id,
+            };
+
+            commentDbContext.AddTagMap(tagMap);
+        });
+
+        private Mode Mode { get; set; } = Mode.Post;
     }
 }

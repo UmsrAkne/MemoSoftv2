@@ -39,6 +39,7 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock>
@@ -63,6 +64,11 @@
                     Background="Gray" />
 
                 <TextBlock Grid.Column="3" Text="{Binding Text}" />
+
+                <TextBlock
+                    Grid.Column="4"
+                    HorizontalAlignment="Right"
+                    Text="{Binding Tag}" />
 
             </Grid>
         </Border>
@@ -89,6 +95,18 @@
 
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
+                    </MenuItem>
+
+                    <MenuItem Header="コメントにタグを付ける" ItemsSource="{Binding Tags}">
+
+                        <!--  Itemssource の表示内容、実行コマンド、パラメーターを ItemContainerStyle で設定する  -->
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Header" Value="{Binding Name}" />
+                                <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=MenuItem}, Path=DataContext.AttachTagCommand}" />
+                                <Setter Property="CommandParameter" Value="{Binding}" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
                     </MenuItem>
 
                     <MenuItem CommandParameter="{Binding PlacementTarget.Content, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="コメントの背景色を変更する">

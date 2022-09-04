@@ -12,6 +12,7 @@
         private bool isFavorite;
         private int backgroundColorArgb = Color.White.ToArgb();
         private int numIndent;
+        private string tag;
 
         public Comment()
         {
@@ -44,5 +45,8 @@
 
         [NotMapped]
         public bool IsEditing { get => isEditing; set => SetProperty(ref isEditing, value); }
+
+        [NotMapped]
+        public string Tag { get => tag; set => SetProperty(ref tag, value); }
     }
 }

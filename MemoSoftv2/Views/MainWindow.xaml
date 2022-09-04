@@ -44,6 +44,10 @@
                 <MenuItem Command="{Binding ExitCommand}" Header="Exit" />
                 <MenuItem Command="{Binding ReloadCommentCommand}" Header="Reload" />
             </MenuItem>
+
+            <MenuItem Header="Edit">
+                <MenuItem Command="{Binding StartTagAdditionModeCommand}" Header="タグを追加する" />
+            </MenuItem>
         </Menu>
 
         <TextBox
