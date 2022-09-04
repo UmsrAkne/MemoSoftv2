@@ -45,12 +45,15 @@
             </MenuItem>
         </Menu>
 
-        <ListBox
-            Grid.Row="1"
-            HorizontalContentAlignment="Left"
-            ItemTemplate="{StaticResource ListBoxItemTemplate}"
-            ItemsPanel="{StaticResource ListBoxItemsPanel}"
-            ItemsSource="{Binding Groups}" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <ListBox
+                HorizontalContentAlignment="Left"
+                BorderThickness="1,1,1,0"
+                ItemTemplate="{StaticResource ListBoxItemTemplate}"
+                ItemsPanel="{StaticResource ListBoxItemsPanel}"
+                ItemsSource="{Binding Groups}" />
+
+        </StackPanel>
 
         <TextBox
             Grid.Row="2"
