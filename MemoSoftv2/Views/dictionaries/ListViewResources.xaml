@@ -39,6 +39,7 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock>
@@ -63,6 +64,11 @@
                     Background="Gray" />
 
                 <TextBlock Grid.Column="3" Text="{Binding Text}" />
+
+                <TextBlock
+                    Grid.Column="4"
+                    HorizontalAlignment="Right"
+                    Text="{Binding Tag}" />
 
             </Grid>
         </Border>
