@@ -14,6 +14,7 @@
         private string title = "MemoSoft v2";
         private ObservableCollection<Comment> comments;
         private List<Tag> tags;
+        private ObservableCollection<Group> groups;
         private string inputText;
         private string systemMessage;
         private Comment editingComment;
@@ -27,6 +28,7 @@
             try
             {
                 commentDbContext.Database.EnsureCreated();
+                commentDbContext.AddGroup(new Group() { Name = "Default Group", Id = 1 });
             }
             catch (Npgsql.NpgsqlException)
             {
@@ -49,6 +51,8 @@
         public ObservableCollection<Comment> Comments { get => comments; set => SetProperty(ref comments, value); }
 
         public List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
+
+        public ObservableCollection<Group> Groups { get => groups; set => SetProperty(ref groups, value); }
 
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
 
@@ -116,6 +120,7 @@
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
         {
             Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
+            Groups = new ObservableCollection<Group>(commentDbContext.GetGroup());
             Tags = commentDbContext.GetTags();
         });
 

@@ -12,6 +12,7 @@
         private bool isFavorite;
         private int backgroundColorArgb = Color.White.ToArgb();
         private int numIndent;
+        private int groupId;
         private string tag;
 
         public Comment()
@@ -42,6 +43,9 @@
 
         [Required]
         public int NumIndent { get => numIndent; set => SetProperty(ref numIndent, value); }
+
+        [Required]
+        public int GroupId { get => groupId; set => SetProperty(ref groupId, value); }
 
         [NotMapped]
         public bool IsEditing { get => isEditing; set => SetProperty(ref isEditing, value); }

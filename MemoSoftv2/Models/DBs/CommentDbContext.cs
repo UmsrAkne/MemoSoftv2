@@ -19,6 +19,8 @@
 
         public DbSet<TagMap> TagMaps { get; set; }
 
+        public DbSet<Group> Groups { get; set; }
+
         public int SearchLimitCount { get; set; } = 100;
 
         public void AddComment(Comment c)
@@ -42,6 +44,15 @@
 
             TagMaps.Add(tagmap);
             SaveChanges();
+        }
+
+        public void AddGroup(Group group)
+        {
+            if (!Groups.Any(g => g.Id == group.Id))
+            {
+                Groups.Add(group);
+                SaveChanges();
+            }
         }
 
         public List<Comment> GetComments()
@@ -91,6 +102,11 @@
         public List<Tag> GetTags()
         {
             return Tags.Where(t => true).ToList();
+        }
+
+        public List<Group> GetGroup()
+        {
+            return Groups.Where(g => true).OrderBy(g => g.Id).ToList();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
