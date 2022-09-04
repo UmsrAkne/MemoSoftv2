@@ -120,6 +120,7 @@
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
         {
             Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
+            Groups = new ObservableCollection<Group>(commentDbContext.GetGroup());
             Tags = commentDbContext.GetTags();
         });
 

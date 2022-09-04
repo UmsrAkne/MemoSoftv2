@@ -47,7 +47,9 @@
 
         <ListBox
             Grid.Row="1"
+            HorizontalContentAlignment="Left"
             ItemTemplate="{StaticResource ListBoxItemTemplate}"
+            ItemsPanel="{StaticResource ListBoxItemsPanel}"
             ItemsSource="{Binding Groups}" />
 
         <TextBox

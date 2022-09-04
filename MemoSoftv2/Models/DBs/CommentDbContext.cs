@@ -104,6 +104,11 @@
             return Tags.Where(t => true).ToList();
         }
 
+        public List<Group> GetGroup()
+        {
+            return Groups.Where(g => true).OrderBy(g => g.Id).ToList();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder();

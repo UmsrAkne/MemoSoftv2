@@ -4,4 +4,8 @@
         <TextBlock Text="{Binding Name}" />
     </DataTemplate>
 
+    <ItemsPanelTemplate x:Key="ListBoxItemsPanel">
+        <StackPanel Orientation="Horizontal" />
+    </ItemsPanelTemplate>
+
 </ResourceDictionary>
