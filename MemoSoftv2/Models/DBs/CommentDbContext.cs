@@ -11,7 +11,6 @@
         public CommentDbContext()
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            AddGroup(new Group() { Name = "Default Group", Id = 1 });
         }
 
         public DbSet<Comment> Comments { get; set; }
