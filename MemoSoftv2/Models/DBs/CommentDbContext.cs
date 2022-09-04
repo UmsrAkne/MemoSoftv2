@@ -49,6 +49,11 @@
             return favoriteComments;
         }
 
+        public List<Tag> GetTags()
+        {
+            return Tags.Where(t => true).ToList();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder();

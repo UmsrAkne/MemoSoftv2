@@ -91,6 +91,8 @@
                         </i:Interaction.Triggers>
                     </MenuItem>
 
+                    <MenuItem Header="コメントにタグを付ける" ItemsSource="{Binding Tags}" />
+
                     <MenuItem CommandParameter="{Binding PlacementTarget.Content, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="コメントの背景色を変更する">
 
                         <MenuItem.Resources>
