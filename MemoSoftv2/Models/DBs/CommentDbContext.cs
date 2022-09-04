@@ -11,6 +11,7 @@
         public CommentDbContext()
         {
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            AddGroup(new Group() { Name = "Default Group" });
         }
 
         public DbSet<Comment> Comments { get; set; }
@@ -18,6 +19,8 @@
         public DbSet<Tag> Tags { get; set; }
 
         public DbSet<TagMap> TagMaps { get; set; }
+
+        public DbSet<Group> Groups { get; set; }
 
         public int SearchLimitCount { get; set; } = 100;
 
@@ -42,6 +45,15 @@
 
             TagMaps.Add(tagmap);
             SaveChanges();
+        }
+
+        public void AddGroup(Group group)
+        {
+            if (!Groups.Any(g => g.Id == group.Id))
+            {
+                Groups.Add(group);
+                SaveChanges();
+            }
         }
 
         public List<Comment> GetComments()
