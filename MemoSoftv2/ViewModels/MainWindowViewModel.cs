@@ -153,6 +153,7 @@
             };
 
             commentDbContext.AddTagMap(tagMap);
+            ReloadCommentCommand.Execute();
         });
 
         private Mode Mode { get; set; } = Mode.Post;
