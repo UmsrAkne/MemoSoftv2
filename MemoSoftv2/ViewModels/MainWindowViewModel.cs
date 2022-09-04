@@ -144,6 +144,17 @@
             System.Windows.Application.Current.Shutdown();
         });
 
+        public DelegateCommand<Tag> AttachTagCommand => new DelegateCommand<Tag>((param) =>
+        {
+            var tagMap = new TagMap()
+            {
+                CommentId = SelectionComment.Id,
+                TagId = param.Id,
+            };
+
+            commentDbContext.AddTagMap(tagMap);
+        });
+
         private Mode Mode { get; set; } = Mode.Post;
     }
 }

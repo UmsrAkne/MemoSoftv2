@@ -33,6 +33,17 @@
             SaveChanges();
         }
 
+        public void AddTagMap(TagMap tagmap)
+        {
+            if (TagMaps.Any(tm => tagmap.TagId == tm.TagId && tm.CommentId == tagmap.CommentId))
+            {
+                return;
+            }
+
+            TagMaps.Add(tagmap);
+            SaveChanges();
+        }
+
         public List<Comment> GetComments()
         {
             var favoriteComments = Comments.Where(c => c.IsFavorite)
