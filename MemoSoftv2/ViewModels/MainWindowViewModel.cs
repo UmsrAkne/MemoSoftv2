@@ -28,7 +28,7 @@
             try
             {
                 commentDbContext.Database.EnsureCreated();
-                commentDbContext.AddGroup(new Group() { Name = "Default Group", Id = 1 });
+                commentDbContext.AddDefaultGroup(new Group() { Name = "Default Group", Id = 1 });
             }
             catch (Npgsql.NpgsqlException)
             {
@@ -159,6 +159,23 @@
 
             commentDbContext.AddTagMap(tagMap);
             ReloadCommentCommand.Execute();
+        });
+
+        public DelegateCommand AddGroupCommand => new DelegateCommand(() =>
+        {
+            commentDbContext.AddGroup(new Group() { Name = "New group" });
+            ReloadCommentCommand.Execute();
+        });
+
+        public DelegateCommand<Group> ChangeGroupNameCommand => new DelegateCommand<Group>((group) =>
+        {
+            group.EditMode = true;
+        });
+
+        public DelegateCommand<Group> ConfirmGroupNameCommand => new DelegateCommand<Group>((group) =>
+        {
+            group.EditMode = false;
+            commentDbContext.SaveChanges();
         });
 
         private Mode Mode { get; set; } = Mode.Post;

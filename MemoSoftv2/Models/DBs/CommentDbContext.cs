@@ -48,10 +48,15 @@
 
         public void AddGroup(Group group)
         {
-            if (!Groups.Any(g => g.Id == group.Id))
+            Groups.Add(group);
+            SaveChanges();
+        }
+
+        public void AddDefaultGroup(Group group)
+        {
+            if (Groups.Count() == 0)
             {
-                Groups.Add(group);
-                SaveChanges();
+                AddGroup(group);
             }
         }
 
