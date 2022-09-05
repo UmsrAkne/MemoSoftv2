@@ -53,6 +53,16 @@
                 ItemsPanel="{StaticResource ListBoxItemsPanel}"
                 ItemsSource="{Binding Groups}" />
 
+            <Button BorderThickness="1,1,1,0">
+
+                <TextBlock
+                    Margin="1,0"
+                    Padding="5,0"
+                    Background="WhiteSmoke"
+                    FontSize="15"
+                    Text="＋" />
+            </Button>
+
         </StackPanel>
 
         <TextBox
