@@ -2,6 +2,7 @@
     x:Class="MemoSoftv2.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:m="clr-namespace:MemoSoftv2.Models"
     xmlns:prism="http://prismlibrary.com/"
     Name="window"
@@ -53,7 +54,14 @@
                 ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}"
                 ItemTemplate="{StaticResource ListBoxItemTemplate}"
                 ItemsPanel="{StaticResource ListBoxItemsPanel}"
-                ItemsSource="{Binding Groups}" />
+                ItemsSource="{Binding Groups}"
+                SelectedItem="{Binding SelectionGroup}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding ReloadCommentCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
 
             <Button BorderThickness="1,1,1,0" Command="{Binding AddGroupCommand}">
 

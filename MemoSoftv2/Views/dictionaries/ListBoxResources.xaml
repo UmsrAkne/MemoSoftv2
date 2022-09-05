@@ -27,11 +27,27 @@
                         <Trigger Property="IsReadOnly" Value="False">
                             <Setter Property="Background" Value="White" />
                             <Setter Property="Focusable" Value="True" />
+
+                            <Setter Property="Cursor">
+                                <Setter.Value>
+                                    <Cursor>
+                                        IBeam
+                                    </Cursor>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
 
                         <Trigger Property="IsReadOnly" Value="True">
                             <Setter Property="Background" Value="WhiteSmoke" />
                             <Setter Property="Focusable" Value="False" />
+
+                            <Setter Property="Cursor">
+                                <Setter.Value>
+                                    <Cursor>
+                                        Arrow
+                                    </Cursor>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
 
                     </Style.Triggers>

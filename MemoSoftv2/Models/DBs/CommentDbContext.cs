@@ -21,6 +21,8 @@
 
         public DbSet<Group> Groups { get; set; }
 
+        public Group CurrentGroup { get; set; }
+
         public int SearchLimitCount { get; set; } = 100;
 
         public void AddComment(Comment c)
@@ -62,12 +64,14 @@
 
         public List<Comment> GetComments()
         {
-            var favoriteComments = Comments.Where(c => c.IsFavorite)
+            var currentGroup = CurrentGroup == null ? new Group() { Id = 1 } : CurrentGroup;
+
+            var favoriteComments = Comments.Where(c => c.IsFavorite && c.GroupId == currentGroup.Id)
                 .OrderByDescending(c => c.CreationDateTime)
                 .Take(SearchLimitCount)
                 .ToList();
 
-            var notFavoriteComments = Comments.Where(c => !c.IsFavorite)
+            var notFavoriteComments = Comments.Where(c => !c.IsFavorite && c.GroupId == currentGroup.Id)
                 .OrderByDescending(c => c.CreationDateTime)
                 .Take(SearchLimitCount)
                 .ToList();
