@@ -28,7 +28,7 @@
             try
             {
                 commentDbContext.Database.EnsureCreated();
-                commentDbContext.AddGroup(new Group() { Name = "Default Group", Id = 1 });
+                commentDbContext.AddDefaultGroup(new Group() { Name = "Default Group", Id = 1 });
             }
             catch (Npgsql.NpgsqlException)
             {
