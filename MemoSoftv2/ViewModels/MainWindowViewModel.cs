@@ -161,6 +161,12 @@
             ReloadCommentCommand.Execute();
         });
 
+        public DelegateCommand AddGroupCommand => new DelegateCommand(() =>
+        {
+            commentDbContext.AddGroup(new Group() { Name = "New group" });
+            ReloadCommentCommand.Execute();
+        });
+
         private Mode Mode { get; set; } = Mode.Post;
     }
 }

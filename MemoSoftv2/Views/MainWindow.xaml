@@ -53,7 +53,7 @@
                 ItemsPanel="{StaticResource ListBoxItemsPanel}"
                 ItemsSource="{Binding Groups}" />
 
-            <Button BorderThickness="1,1,1,0">
+            <Button BorderThickness="1,1,1,0" Command="{Binding AddGroupCommand}">
 
                 <TextBlock
                     Margin="1,0"
