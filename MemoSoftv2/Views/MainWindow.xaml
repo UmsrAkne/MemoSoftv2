@@ -53,7 +53,8 @@
                 ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}"
                 ItemTemplate="{StaticResource ListBoxItemTemplate}"
                 ItemsPanel="{StaticResource ListBoxItemsPanel}"
-                ItemsSource="{Binding Groups}" />
+                ItemsSource="{Binding Groups}"
+                SelectedItem="{Binding SelectionGroup}" />
 
             <Button BorderThickness="1,1,1,0" Command="{Binding AddGroupCommand}">
 

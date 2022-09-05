@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows.Media;
     using MemoSoftv2.Models;
     using MemoSoftv2.Models.DBs;
@@ -19,6 +20,7 @@
         private string systemMessage;
         private Comment editingComment;
         private Comment selectionComment;
+        private Group selectionGroup;
         private bool isTextBoxFocused;
 
         private CommentDbContext commentDbContext = new CommentDbContext();
@@ -62,6 +64,8 @@
 
         public Comment SelectionComment { get => selectionComment; set => SetProperty(ref selectionComment, value); }
 
+        public Group SelectionGroup { get => selectionGroup; set => SetProperty(ref selectionGroup, value); }
+
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
             if (string.IsNullOrWhiteSpace(InputText))
@@ -71,7 +75,7 @@
 
             if (Mode == Mode.Post)
             {
-                commentDbContext.AddComment(new Comment(InputText, DateTime.Now));
+                commentDbContext.AddComment(new Comment(InputText, DateTime.Now) { GroupId = SelectionGroup.Id });
             }
             else if (Mode == Mode.Edit)
             {
@@ -122,6 +126,11 @@
             Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
             Groups = new ObservableCollection<Group>(commentDbContext.GetGroup());
             Tags = commentDbContext.GetTags();
+
+            if (SelectionGroup == null && Groups.Count != 0)
+            {
+                SelectionGroup = Groups.FirstOrDefault();
+            }
         });
 
         public DelegateCommand FocusToTextBoxCommand => new DelegateCommand(() =>
