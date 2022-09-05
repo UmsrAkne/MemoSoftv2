@@ -8,6 +8,7 @@
     <DataTemplate x:Key="ListBoxItemTemplate">
 
         <TextBox IsReadOnly="{Binding EditMode, Converter={StaticResource boolNegativeConverter}}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
+
             <TextBox.InputBindings>
                 <KeyBinding
                     Key="Enter"
@@ -15,6 +16,23 @@
                     CommandParameter="{Binding Content, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                     Modifiers="Ctrl" />
             </TextBox.InputBindings>
+
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <Trigger Property="IsReadOnly" Value="False">
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Focusable" Value="True" />
+                        </Trigger>
+
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter Property="Background" Value="WhiteSmoke" />
+                            <Setter Property="Focusable" Value="False" />
+                        </Trigger>
+
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
 
         </TextBox>
     </DataTemplate>
