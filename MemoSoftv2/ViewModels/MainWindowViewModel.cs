@@ -64,7 +64,15 @@
 
         public Comment SelectionComment { get => selectionComment; set => SetProperty(ref selectionComment, value); }
 
-        public Group SelectionGroup { get => selectionGroup; set => SetProperty(ref selectionGroup, value); }
+        public Group SelectionGroup
+        {
+            get => selectionGroup;
+            set
+            {
+                SetProperty(ref selectionGroup, value);
+                commentDbContext.CurrentGroup = value;
+            }
+        }
 
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
