@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:m="clr-namespace:MemoSoftv2.Models"
     xmlns:prism="http://prismlibrary.com/"
+    Name="window"
     Title="{Binding Title}"
     Width="1000"
     Height="500"
@@ -49,6 +50,7 @@
             <ListBox
                 HorizontalContentAlignment="Left"
                 BorderThickness="1,1,1,0"
+                ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}"
                 ItemTemplate="{StaticResource ListBoxItemTemplate}"
                 ItemsPanel="{StaticResource ListBoxItemsPanel}"
                 ItemsSource="{Binding Groups}" />

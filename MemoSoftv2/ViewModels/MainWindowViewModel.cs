@@ -167,6 +167,17 @@
             ReloadCommentCommand.Execute();
         });
 
+        public DelegateCommand<Group> ChangeGroupNameCommand => new DelegateCommand<Group>((group) =>
+        {
+            group.EditMode = true;
+        });
+
+        public DelegateCommand<Group> ConfirmGroupNameCommand => new DelegateCommand<Group>((group) =>
+        {
+            group.EditMode = false;
+            commentDbContext.SaveChanges();
+        });
+
         private Mode Mode { get; set; } = Mode.Post;
     }
 }
