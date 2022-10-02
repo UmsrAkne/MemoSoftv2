@@ -1,9 +1,9 @@
-﻿namespace MemoSoftv2.Models.Converters
-{
-    using System;
-    using System.Globalization;
-    using System.Windows.Data;
+﻿using System;
+using System.Globalization;
+using System.Windows.Data;
 
+namespace MemoSoftv2.Models.Converters
+{
     public class ColorBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

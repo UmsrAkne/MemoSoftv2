@@ -1,17 +1,20 @@
-﻿namespace MemoSoftv2.ViewModels
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Media;
-    using MemoSoftv2.Models;
-    using MemoSoftv2.Models.DBs;
-    using Prism.Commands;
-    using Prism.Mvvm;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Media;
+using MemoSoftv2.Models;
+using MemoSoftv2.Models.DBs;
+using Prism.Commands;
+using Prism.Mvvm;
 
+namespace MemoSoftv2.ViewModels
+{
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class MainWindowViewModel : BindableBase
     {
+        private readonly CommentDbContext commentDbContext = new CommentDbContext();
+
         private string title = "MemoSoft v2";
         private ObservableCollection<Comment> comments;
         private List<Tag> tags;
@@ -22,8 +25,6 @@
         private Comment selectionComment;
         private Group selectionGroup;
         private bool isTextBoxFocused;
-
-        private CommentDbContext commentDbContext = new CommentDbContext();
 
         public MainWindowViewModel()
         {
@@ -50,15 +51,22 @@
             set { SetProperty(ref title, value); }
         }
 
-        public ObservableCollection<Comment> Comments { get => comments; set => SetProperty(ref comments, value); }
+        public ObservableCollection<Comment> Comments
+        {
+            get => comments; private set => SetProperty(ref comments, value);
+        }
 
-        public List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
-
-        public ObservableCollection<Group> Groups { get => groups; set => SetProperty(ref groups, value); }
+        public ObservableCollection<Group> Groups
+        {
+            get => groups; private set => SetProperty(ref groups, value);
+        }
 
         public string InputText { get => inputText; set => SetProperty(ref inputText, value); }
 
-        public string SystemMessage { get => systemMessage; set => SetProperty(ref systemMessage, value); }
+        public string SystemMessage
+        {
+            get => systemMessage; private set => SetProperty(ref systemMessage, value);
+        }
 
         public bool IsTextBoxFocused { get => isTextBoxFocused; set => SetProperty(ref isTextBoxFocused, value); }
 
@@ -121,12 +129,14 @@
 
         public DelegateCommand CancelEditCommentCommand => new DelegateCommand(() =>
         {
-            if (editingComment != null)
+            if (editingComment == null)
             {
-                editingComment.IsEditing = false;
-                editingComment = null;
-                InputText = string.Empty;
+                return;
             }
+
+            editingComment.IsEditing = false;
+            editingComment = null;
+            InputText = string.Empty;
         });
 
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
@@ -148,9 +158,9 @@
             IsTextBoxFocused = true;
         });
 
-        public DelegateCommand<object> ChangeBackgroundColorCommand => new DelegateCommand<object>((olorBrush) =>
+        public DelegateCommand<object> ChangeBackgroundColorCommand => new DelegateCommand<object>((colorBrush) =>
         {
-            var mediaColor = ((SolidColorBrush)olorBrush).Color;
+            var mediaColor = ((SolidColorBrush)colorBrush).Color;
             SelectionComment.BackgroundColorArgb = System.Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B).ToArgb();
             commentDbContext.SaveChanges();
         });
@@ -196,5 +206,7 @@
         });
 
         private Mode Mode { get; set; } = Mode.Post;
+
+        private List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
     }
 }

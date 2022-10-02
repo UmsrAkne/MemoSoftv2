@@ -1,7 +1,7 @@
-﻿namespace MemoSoftv2.Models
-{
-    using System.Windows;
+﻿using System.Windows;
 
+namespace MemoSoftv2.Models
+{
     public static class FocusExtension
     {
         public static readonly DependencyProperty IsFocusedProperty =
