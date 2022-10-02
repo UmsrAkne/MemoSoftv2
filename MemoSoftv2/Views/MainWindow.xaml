@@ -2,14 +2,19 @@
     x:Class="MemoSoftv2.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:m="clr-namespace:MemoSoftv2.Models"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    Name="window"
+    xmlns:viewModels="clr-namespace:MemoSoftv2.ViewModels"
+    Name="Window"
     Title="{Binding Title}"
     Width="1000"
     Height="500"
-    prism:ViewModelLocator.AutoWireViewModel="True">
+    d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
 
     <Window.Resources>
 
@@ -33,6 +38,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
@@ -105,6 +111,6 @@
             </StatusBarItem>
         </StatusBar>
 
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+        <ContentControl Grid.Row="5" prism:RegionManager.RegionName="ContentRegion" />
     </Grid>
 </Window>

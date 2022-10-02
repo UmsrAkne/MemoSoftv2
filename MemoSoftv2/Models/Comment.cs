@@ -1,11 +1,11 @@
-﻿namespace MemoSoftv2.Models
-{
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Drawing;
-    using Prism.Mvvm;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
+using Prism.Mvvm;
 
+namespace MemoSoftv2.Models
+{
     public class Comment : BindableBase
     {
         private bool isEditing;
@@ -25,6 +25,7 @@
             CreationDateTime = creationDatetime;
         }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         [Key]
         [Required]
         public int Id { get; set; }
@@ -44,6 +45,7 @@
         [Required]
         public int NumIndent { get => numIndent; set => SetProperty(ref numIndent, value); }
 
+        // ReSharper disable once PropertyCanBeMadeInitOnly.Global
         [Required]
         public int GroupId { get => groupId; set => SetProperty(ref groupId, value); }
 
