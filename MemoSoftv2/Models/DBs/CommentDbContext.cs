@@ -21,6 +21,8 @@
 
         public DbSet<Group> Groups { get; set; }
 
+        public DbSet<SubComment> SubComments { get; set; }
+
         public Group CurrentGroup { get; set; }
 
         public int SearchLimitCount { get; set; } = 100;
@@ -28,6 +30,13 @@
         public void AddComment(Comment c)
         {
             Comments.Add(c);
+            SaveChanges();
+        }
+
+        public void AddSubComment(Comment parent, SubComment child)
+        {
+            child.ParentCommentId = parent.Id;
+            SubComments.Add(child);
             SaveChanges();
         }
 

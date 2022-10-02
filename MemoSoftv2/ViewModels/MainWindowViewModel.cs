@@ -23,8 +23,10 @@ namespace MemoSoftv2.ViewModels
         private string systemMessage;
         private Comment editingComment;
         private Comment selectionComment;
+        private Comment parentComment;
         private Group selectionGroup;
         private bool isTextBoxFocused;
+        private Mode mode = Mode.Edit;
 
         public MainWindowViewModel()
         {
@@ -72,6 +74,8 @@ namespace MemoSoftv2.ViewModels
 
         public Comment SelectionComment { get => selectionComment; set => SetProperty(ref selectionComment, value); }
 
+        public Comment ParentComment { get => parentComment; set => SetProperty(ref parentComment, value); }
+
         public Group SelectionGroup
         {
             get => selectionGroup;
@@ -105,6 +109,10 @@ namespace MemoSoftv2.ViewModels
             {
                 commentDbContext.AddTag(new Tag() { Name = InputText });
             }
+            else if (Mode == Mode.SubComment)
+            {
+                commentDbContext.AddSubComment(ParentComment, new SubComment());
+            }
 
             InputText = string.Empty;
             SystemMessage = string.Empty;
@@ -129,14 +137,15 @@ namespace MemoSoftv2.ViewModels
 
         public DelegateCommand CancelEditCommentCommand => new DelegateCommand(() =>
         {
-            if (editingComment == null)
+            if (editingComment != null)
             {
-                return;
+                editingComment.IsEditing = false;
+                editingComment = null;
             }
 
-            editingComment.IsEditing = false;
-            editingComment = null;
+            ParentComment = null;
             InputText = string.Empty;
+            Mode = Mode.Post;
         });
 
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
@@ -205,7 +214,13 @@ namespace MemoSoftv2.ViewModels
             commentDbContext.SaveChanges();
         });
 
-        private Mode Mode { get; set; } = Mode.Post;
+        public DelegateCommand SubCommentModeCommand => new DelegateCommand(() =>
+        {
+            ParentComment = SelectionComment;
+            Mode = Mode.SubComment;
+        });
+
+        public Mode Mode { get => mode; set => SetProperty(ref mode, value); }
 
         private List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
     }
