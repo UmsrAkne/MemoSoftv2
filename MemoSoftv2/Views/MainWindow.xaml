@@ -81,21 +81,49 @@
 
         </StackPanel>
 
-        <TextBox
-            Grid.Row="2"
-            m:FocusExtension.IsFocused="{Binding IsTextBoxFocused}"
-            AcceptsReturn="True"
-            AcceptsTab="True"
-            Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}">
+        <StackPanel Grid.Row="2">
 
-            <TextBox.InputBindings>
-                <KeyBinding
-                    Key="Return"
-                    Command="{Binding PostCommentCommand}"
-                    Modifiers="Ctrl" />
-            </TextBox.InputBindings>
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Height" Value="0" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Mode}">
+                                <DataTrigger.Value>
+                                    <m:Mode>SubComment</m:Mode>
+                                </DataTrigger.Value>
+                                <Setter Property="Height" Value="auto" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
 
-        </TextBox>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Parent : " />
+                <TextBlock Grid.Column="1" Text="{Binding ParentComment.Text}" />
+            </Grid>
+
+            <TextBox
+                m:FocusExtension.IsFocused="{Binding IsTextBoxFocused}"
+                AcceptsReturn="True"
+                AcceptsTab="True"
+                Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}">
+
+                <TextBox.InputBindings>
+                    <KeyBinding
+                        Key="Return"
+                        Command="{Binding PostCommentCommand}"
+                        Modifiers="Ctrl" />
+                </TextBox.InputBindings>
+
+            </TextBox>
+
+
+        </StackPanel>
+
 
         <ListView
             Grid.Row="3"

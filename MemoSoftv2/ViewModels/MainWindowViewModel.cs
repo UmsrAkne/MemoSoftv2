@@ -26,6 +26,7 @@ namespace MemoSoftv2.ViewModels
         private Comment parentComment;
         private Group selectionGroup;
         private bool isTextBoxFocused;
+        private Mode mode = Mode.Edit;
 
         public MainWindowViewModel()
         {
@@ -219,7 +220,7 @@ namespace MemoSoftv2.ViewModels
             Mode = Mode.SubComment;
         });
 
-        private Mode Mode { get; set; } = Mode.Post;
+        public Mode Mode { get => mode; set => SetProperty(ref mode, value); }
 
         private List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
     }
