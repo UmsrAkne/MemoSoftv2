@@ -21,6 +21,8 @@
 
         public DbSet<Group> Groups { get; set; }
 
+        public DbSet<SubComment> SubComments { get; set; }
+
         public Group CurrentGroup { get; set; }
 
         public int SearchLimitCount { get; set; } = 100;
