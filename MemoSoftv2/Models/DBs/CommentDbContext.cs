@@ -33,6 +33,13 @@
             SaveChanges();
         }
 
+        public void AddSubComment(Comment parent, SubComment child)
+        {
+            child.ParentCommentId = parent.Id;
+            SubComments.Add(child);
+            SaveChanges();
+        }
+
         public void AddTag(Tag tag)
         {
             Tags.Add(tag);

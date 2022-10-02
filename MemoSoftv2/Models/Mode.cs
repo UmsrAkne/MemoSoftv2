@@ -16,5 +16,10 @@
         /// タグ追加モードです
         /// </summary>
         TagAddition,
+
+        /// <summary>
+        /// サブコメントを投稿するモードです
+        /// </summary>
+        SubComment,
     }
 }
