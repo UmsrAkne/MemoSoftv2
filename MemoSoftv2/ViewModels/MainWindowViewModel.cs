@@ -26,7 +26,7 @@ namespace MemoSoftv2.ViewModels
         private Comment parentComment;
         private Group selectionGroup;
         private bool isTextBoxFocused;
-        private Mode mode = Mode.Edit;
+        private Mode mode = Mode.Post;
 
         public MainWindowViewModel()
         {
