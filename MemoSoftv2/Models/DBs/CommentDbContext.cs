@@ -1,4 +1,6 @@
-﻿namespace MemoSoftv2.Models.DBs
+﻿using System.Diagnostics;
+
+namespace MemoSoftv2.Models.DBs
 {
     using System;
     using System.Collections.Generic;
@@ -113,6 +115,23 @@
                 (c, t) => new { comment = c, tag = t })
                 .ToList()
                 .ForEach(c => c.comment.Tag = c.tag.name);
+
+            if (favoriteComments.Count != 0)
+            {
+                var maxId = favoriteComments.Max(c => c.Id);
+                var minId = favoriteComments.Min(c => c.Id);
+
+                var subComments = SubComments.Where(c => c.ParentCommentId <= maxId && c.ParentCommentId >= minId).ToList();
+                var resultList = new List<Comment>();
+
+                favoriteComments.ForEach(c =>
+                {
+                    resultList.Add(c);
+                    resultList.AddRange(subComments.Where(sc => sc.ParentCommentId == c.Id));
+                });
+
+                return resultList;
+            }
 
             return favoriteComments;
         }
