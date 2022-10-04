@@ -54,5 +54,8 @@ namespace MemoSoftv2.Models
 
         [NotMapped]
         public string Tag { get => tag; set => SetProperty(ref tag, value); }
+
+        [NotMapped]
+        public bool IsSubComment => false;
     }
 }
