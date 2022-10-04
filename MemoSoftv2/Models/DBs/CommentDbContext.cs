@@ -127,7 +127,9 @@ namespace MemoSoftv2.Models.DBs
                 favoriteComments.ForEach(c =>
                 {
                     resultList.Add(c);
-                    resultList.AddRange(subComments.Where(sc => sc.ParentCommentId == c.Id));
+                    resultList.AddRange(subComments
+                        .Where(sc => sc.ParentCommentId == c.Id)
+                        .OrderByDescending(sc => sc.CreationDateTime));
                 });
 
                 return resultList;
