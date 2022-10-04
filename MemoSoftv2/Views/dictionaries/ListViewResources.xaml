@@ -30,6 +30,15 @@
 
             <Grid>
                 <Grid.Resources />
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSubComment}" Value="True">
+                                <Setter Property="Margin" Value="15,0,0,0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15" />
