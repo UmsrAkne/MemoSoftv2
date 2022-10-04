@@ -74,7 +74,7 @@ namespace MemoSoftv2.ViewModels
 
         public Comment SelectionComment { get => selectionComment; set => SetProperty(ref selectionComment, value); }
 
-        public Comment ParentComment { get => parentComment; set => SetProperty(ref parentComment, value); }
+        public Comment ParentComment { get => parentComment; private set => SetProperty(ref parentComment, value); }
 
         public Group SelectionGroup
         {
