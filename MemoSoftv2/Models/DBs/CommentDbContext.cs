@@ -27,21 +27,11 @@ namespace MemoSoftv2.Models.DBs
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private DbSet<Group> Groups { get; set; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        private DbSet<SubComment> SubComments { get; set; }
-
         private int SearchLimitCount { get; set; } = 100;
 
         public void AddComment(Comment c)
         {
             Comments.Add(c);
-            SaveChanges();
-        }
-
-        public void AddSubComment(Comment parent, SubComment child)
-        {
-            child.ParentCommentId = parent.Id;
-            SubComments.Add(child);
             SaveChanges();
         }
 
@@ -118,25 +108,6 @@ namespace MemoSoftv2.Models.DBs
                 (c, t) => new { comment = c, tag = t })
                 .ToList()
                 .ForEach(c => c.comment.Tag = c.tag.name);
-
-            if (favoriteComments.Count != 0)
-            {
-                var maxId = favoriteComments.Max(c => c.Id);
-                var minId = favoriteComments.Min(c => c.Id);
-
-                var subComments = SubComments.Where(c => c.ParentCommentId <= maxId && c.ParentCommentId >= minId).ToList();
-                var resultList = new List<Comment>();
-
-                favoriteComments.ForEach(c =>
-                {
-                    resultList.Add(c);
-                    resultList.AddRange(subComments
-                        .Where(sc => sc.ParentCommentId == c.Id)
-                        .OrderByDescending(sc => sc.CreationDateTime));
-                });
-
-                return resultList;
-            }
 
             return favoriteComments;
         }
