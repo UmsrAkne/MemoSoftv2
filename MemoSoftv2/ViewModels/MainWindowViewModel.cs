@@ -74,7 +74,18 @@ namespace MemoSoftv2.ViewModels
 
         public Comment SelectionComment { get => selectionComment; set => SetProperty(ref selectionComment, value); }
 
-        public Comment ParentComment { get => parentComment; private set => SetProperty(ref parentComment, value); }
+        public Comment ParentComment
+        {
+            get => parentComment;
+            private
+            set
+            {
+                if (!value.IsSubComment)
+                {
+                    SetProperty(ref parentComment, value);
+                }
+            }
+        }
 
         public Group SelectionGroup
         {
@@ -222,6 +233,11 @@ namespace MemoSoftv2.ViewModels
 
         public DelegateCommand SubCommentModeCommand => new DelegateCommand(() =>
         {
+            if (SelectionComment.IsSubComment)
+            {
+                return;
+            }
+
             ParentComment = SelectionComment;
             Mode = Mode.SubComment;
         });
