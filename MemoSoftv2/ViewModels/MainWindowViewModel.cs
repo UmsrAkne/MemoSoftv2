@@ -111,6 +111,13 @@ namespace MemoSoftv2.ViewModels
             }
             else if (Mode == Mode.SubComment)
             {
+                commentDbContext.AddComment(new Comment()
+                {
+                    IsSubComment = true,
+                    Text = InputText,
+                    GroupId = SelectionGroup.Id,
+                    ParentCommentId = ParentComment.Id,
+                });
             }
 
             InputText = string.Empty;

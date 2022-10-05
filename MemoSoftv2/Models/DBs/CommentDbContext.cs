@@ -71,11 +71,13 @@ namespace MemoSoftv2.Models.DBs
             var currentGroup = CurrentGroup ?? new Group() { Id = 1 };
 
             var favoriteComments = Comments.Where(c => c.IsFavorite && c.GroupId == currentGroup.Id)
+                .Where(c => !c.IsSubComment)
                 .OrderByDescending(c => c.CreationDateTime)
                 .Take(SearchLimitCount)
                 .ToList();
 
             var notFavoriteComments = Comments.Where(c => !c.IsFavorite && c.GroupId == currentGroup.Id)
+                .Where(c => !c.IsSubComment)
                 .OrderByDescending(c => c.CreationDateTime)
                 .Take(SearchLimitCount)
                 .ToList();
@@ -108,6 +110,24 @@ namespace MemoSoftv2.Models.DBs
                 (c, t) => new { comment = c, tag = t })
                 .ToList()
                 .ForEach(c => c.comment.Tag = c.tag.name);
+
+            if (favoriteComments.Count != 0)
+            {
+                var resultList = new List<Comment>();
+                var allSubCommentTable = Comments.Where(c => c.IsSubComment);
+
+                favoriteComments.ForEach(c =>
+                {
+                    resultList.Add(c);
+
+                    allSubCommentTable.Where(sc => sc.ParentCommentId == c.Id)
+                        .OrderByDescending(sc => sc.CreationDateTime)
+                        .ToList()
+                        .ForEach(sc => resultList.Add(sc));
+                });
+
+                return resultList;
+            }
 
             return favoriteComments;
         }
