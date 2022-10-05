@@ -15,19 +15,19 @@ namespace MemoSoftv2.Models.DBs
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
-        public DbSet<Comment> Comments { get; set; }
+        private DbSet<Comment> Comments { get; set; }
 
-        public DbSet<Tag> Tags { get; set; }
+        private DbSet<Tag> Tags { get; set; }
 
-        public DbSet<TagMap> TagMaps { get; set; }
+        private DbSet<TagMap> TagMaps { get; set; }
 
-        public DbSet<Group> Groups { get; set; }
+        private DbSet<Group> Groups { get; set; }
 
-        public DbSet<SubComment> SubComments { get; set; }
+        private DbSet<SubComment> SubComments { get; set; }
 
         public Group CurrentGroup { get; set; }
 
-        public int SearchLimitCount { get; set; } = 100;
+        private int SearchLimitCount { get; set; } = 100;
 
         public void AddComment(Comment c)
         {
