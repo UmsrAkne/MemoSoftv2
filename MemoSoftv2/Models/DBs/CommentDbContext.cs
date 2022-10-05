@@ -27,21 +27,11 @@ namespace MemoSoftv2.Models.DBs
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private DbSet<Group> Groups { get; set; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        private DbSet<SubComment> SubComments { get; set; }
-
         private int SearchLimitCount { get; set; } = 100;
 
         public void AddComment(Comment c)
         {
             Comments.Add(c);
-            SaveChanges();
-        }
-
-        public void AddSubComment(Comment parent, SubComment child)
-        {
-            child.ParentCommentId = parent.Id;
-            SubComments.Add(child);
             SaveChanges();
         }
 
@@ -81,11 +71,13 @@ namespace MemoSoftv2.Models.DBs
             var currentGroup = CurrentGroup ?? new Group() { Id = 1 };
 
             var favoriteComments = Comments.Where(c => c.IsFavorite && c.GroupId == currentGroup.Id)
+                .Where(c => !c.IsSubComment)
                 .OrderByDescending(c => c.CreationDateTime)
                 .Take(SearchLimitCount)
                 .ToList();
 
             var notFavoriteComments = Comments.Where(c => !c.IsFavorite && c.GroupId == currentGroup.Id)
+                .Where(c => !c.IsSubComment)
                 .OrderByDescending(c => c.CreationDateTime)
                 .Take(SearchLimitCount)
                 .ToList();
@@ -121,18 +113,17 @@ namespace MemoSoftv2.Models.DBs
 
             if (favoriteComments.Count != 0)
             {
-                var maxId = favoriteComments.Max(c => c.Id);
-                var minId = favoriteComments.Min(c => c.Id);
-
-                var subComments = SubComments.Where(c => c.ParentCommentId <= maxId && c.ParentCommentId >= minId).ToList();
                 var resultList = new List<Comment>();
+                var allSubCommentTable = Comments.Where(c => c.IsSubComment);
 
                 favoriteComments.ForEach(c =>
                 {
                     resultList.Add(c);
-                    resultList.AddRange(subComments
-                        .Where(sc => sc.ParentCommentId == c.Id)
-                        .OrderByDescending(sc => sc.CreationDateTime));
+
+                    allSubCommentTable.Where(sc => sc.ParentCommentId == c.Id)
+                        .OrderByDescending(sc => sc.CreationDateTime)
+                        .ToList()
+                        .ForEach(sc => resultList.Add(sc));
                 });
 
                 return resultList;

@@ -26,6 +26,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Remove="Models\SubComment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Properties\Settings.settings">

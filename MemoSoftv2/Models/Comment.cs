@@ -49,13 +49,16 @@ namespace MemoSoftv2.Models
         [Required]
         public int GroupId { get => groupId; set => SetProperty(ref groupId, value); }
 
+        [Required]
+        public int ParentCommentId { get; set; }
+
+        [Required]
+        public bool IsSubComment { get; set; }
+
         [NotMapped]
         public bool IsEditing { get => isEditing; set => SetProperty(ref isEditing, value); }
 
         [NotMapped]
         public string Tag { get => tag; set => SetProperty(ref tag, value); }
-
-        [NotMapped]
-        public bool IsSubComment => false;
     }
 }
