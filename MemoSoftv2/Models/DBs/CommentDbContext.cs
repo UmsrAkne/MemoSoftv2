@@ -1,13 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace MemoSoftv2.Models.DBs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Microsoft.EntityFrameworkCore;
-    using Npgsql;
-
     public class CommentDbContext : DbContext
     {
         public CommentDbContext()
@@ -15,19 +13,24 @@ namespace MemoSoftv2.Models.DBs
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
-        public DbSet<Comment> Comments { get; set; }
-
-        public DbSet<Tag> Tags { get; set; }
-
-        public DbSet<TagMap> TagMaps { get; set; }
-
-        public DbSet<Group> Groups { get; set; }
-
-        public DbSet<SubComment> SubComments { get; set; }
-
         public Group CurrentGroup { get; set; }
 
-        public int SearchLimitCount { get; set; } = 100;
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        private DbSet<Comment> Comments { get; set; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        private DbSet<Tag> Tags { get; set; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        private DbSet<TagMap> TagMaps { get; set; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        private DbSet<Group> Groups { get; set; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        private DbSet<SubComment> SubComments { get; set; }
+
+        private int SearchLimitCount { get; set; } = 100;
 
         public void AddComment(Comment c)
         {
@@ -48,14 +51,14 @@ namespace MemoSoftv2.Models.DBs
             SaveChanges();
         }
 
-        public void AddTagMap(TagMap tagmap)
+        public void AddTagMap(TagMap tagMap)
         {
-            if (TagMaps.Any(tm => tagmap.TagId == tm.TagId && tm.CommentId == tagmap.CommentId))
+            if (TagMaps.Any(tm => tagMap.TagId == tm.TagId && tm.CommentId == tagMap.CommentId))
             {
                 return;
             }
 
-            TagMaps.Add(tagmap);
+            TagMaps.Add(tagMap);
             SaveChanges();
         }
 
@@ -67,7 +70,7 @@ namespace MemoSoftv2.Models.DBs
 
         public void AddDefaultGroup(Group group)
         {
-            if (Groups.Count() == 0)
+            if (!Groups.Any())
             {
                 AddGroup(group);
             }
@@ -75,7 +78,7 @@ namespace MemoSoftv2.Models.DBs
 
         public List<Comment> GetComments()
         {
-            var currentGroup = CurrentGroup == null ? new Group() { Id = 1 } : CurrentGroup;
+            var currentGroup = CurrentGroup ?? new Group() { Id = 1 };
 
             var favoriteComments = Comments.Where(c => c.IsFavorite && c.GroupId == currentGroup.Id)
                 .OrderByDescending(c => c.CreationDateTime)
@@ -150,13 +153,14 @@ namespace MemoSoftv2.Models.DBs
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder();
-
-            builder.Port = 5433;
-            builder.Username = "postgres";
-            builder.Password = "password";
-            builder.Host = "localhost";
-            builder.Database = "testdb";
+            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder
+            {
+                Port = 5433,
+                Username = "postgres",
+                Password = "password",
+                Host = "localhost",
+                Database = "testdb",
+            };
 
             optionsBuilder.UseNpgsql(builder.ToString());
         }
