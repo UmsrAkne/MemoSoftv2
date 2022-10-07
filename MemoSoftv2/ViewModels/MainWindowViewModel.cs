@@ -244,6 +244,7 @@ namespace MemoSoftv2.ViewModels
 
         public Mode Mode { get => mode; set => SetProperty(ref mode, value); }
 
-        private List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
+        // ReSharper disable once MemberCanBePrivate.Global
+        public List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
     }
 }
