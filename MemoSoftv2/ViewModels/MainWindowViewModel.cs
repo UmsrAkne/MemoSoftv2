@@ -5,14 +5,17 @@ using System.Linq;
 using System.Windows.Media;
 using MemoSoftv2.Models;
 using MemoSoftv2.Models.DBs;
+using MemoSoftv2.Views;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 
 namespace MemoSoftv2.ViewModels
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class MainWindowViewModel : BindableBase
     {
+        private readonly IDialogService dialogService;
         private readonly CommentDbContext commentDbContext = new CommentDbContext();
 
         private string title = "MemoSoft v2";
@@ -28,8 +31,12 @@ namespace MemoSoftv2.ViewModels
         private bool isTextBoxFocused;
         private Mode mode = Mode.Post;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IDialogService dialogService, CommentDbContext commentDbContext)
         {
+            dialogService.ShowDialog(nameof(ConnectionPage), default, _ => { });
+            this.dialogService = dialogService;
+            this.commentDbContext = commentDbContext;
+
             try
             {
                 commentDbContext.Database.EnsureCreated();

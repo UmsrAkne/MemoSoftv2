@@ -15,6 +15,8 @@ namespace MemoSoftv2.Models.DBs
 
         public Group CurrentGroup { get; set; }
 
+        public NpgsqlConnectionStringBuilder ConnectionStringBuilder { get; } = new NpgsqlConnectionStringBuilder();
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private DbSet<Comment> Comments { get; set; }
 
@@ -153,7 +155,7 @@ namespace MemoSoftv2.Models.DBs
                 Database = "testdb",
             };
 
-            optionsBuilder.UseNpgsql(builder.ToString());
+            optionsBuilder.UseNpgsql(ConnectionStringBuilder.ToString());
         }
     }
 }
