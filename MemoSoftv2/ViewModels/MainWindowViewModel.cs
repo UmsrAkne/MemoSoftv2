@@ -31,10 +31,11 @@ namespace MemoSoftv2.ViewModels
         private bool isTextBoxFocused;
         private Mode mode = Mode.Post;
 
-        public MainWindowViewModel(IDialogService dialogService)
+        public MainWindowViewModel(IDialogService dialogService, CommentDbContext commentDbContext)
         {
             dialogService.ShowDialog(nameof(ConnectionPage), default, _ => { });
             this.dialogService = dialogService;
+            this.commentDbContext = commentDbContext;
 
             try
             {

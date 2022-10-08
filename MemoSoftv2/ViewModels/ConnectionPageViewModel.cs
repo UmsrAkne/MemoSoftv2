@@ -1,4 +1,5 @@
 using System;
+using MemoSoftv2.Models.DBs;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -7,11 +8,17 @@ namespace MemoSoftv2.ViewModels
 {
     public class ConnectionPageViewModel : BindableBase, IDialogAware
     {
+        private readonly CommentDbContext commentDbContext;
         private int port;
         private string databaseName;
         private string host;
         private string password;
         private string userName;
+
+        public ConnectionPageViewModel(CommentDbContext commentDbContext)
+        {
+            this.commentDbContext = commentDbContext;
+        }
 
         public event Action<IDialogResult> RequestClose;
 
@@ -29,6 +36,11 @@ namespace MemoSoftv2.ViewModels
 
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
         {
+            commentDbContext.ConnectionStringBuilder.Database = DatabaseName;
+            commentDbContext.ConnectionStringBuilder.Port = Port;
+            commentDbContext.ConnectionStringBuilder.Host = Host;
+            commentDbContext.ConnectionStringBuilder.Password = Password;
+            commentDbContext.ConnectionStringBuilder.Username = UserName;
             RequestClose?.Invoke(default);
         });
 

@@ -1,4 +1,7 @@
-﻿using MemoSoftv2.ViewModels;
+﻿using MemoSoftv2.Models.DBs;
+using MemoSoftv2.ViewModels;
+using Prism.Unity;
+using Unity;
 
 namespace MemoSoftv2
 {
@@ -19,6 +22,9 @@ namespace MemoSoftv2
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterDialog<ConnectionPage, ConnectionPageViewModel>();
+
+            IUnityContainer container = containerRegistry.GetContainer();
+            container.RegisterSingleton(typeof(CommentDbContext));
         }
     }
 }
