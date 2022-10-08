@@ -51,6 +51,7 @@
             <Button
                 Width="50"
                 Height="20"
+                Command="{Binding CloseCommand}"
                 Content="決定" />
         </StackPanel>
 

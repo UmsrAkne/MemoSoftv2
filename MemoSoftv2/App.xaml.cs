@@ -1,4 +1,6 @@
-﻿namespace MemoSoftv2
+﻿using MemoSoftv2.ViewModels;
+
+namespace MemoSoftv2
 {
     using System.Windows;
     using MemoSoftv2.Views;
@@ -16,6 +18,7 @@
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterDialog<ConnectionPage, ConnectionPageViewModel>();
         }
     }
 }
