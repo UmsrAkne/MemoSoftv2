@@ -33,5 +33,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Remove="Views\ConnectionPage.xaml.cs~" />
   </ItemGroup>
 </Project>
