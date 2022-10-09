@@ -16,6 +16,15 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="0,1" />
+                </Style>
+
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="0,1" />
+                </Style>
+            </StackPanel.Resources>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Width="150" Text="Database Name" />
                 <TextBox Width="250" Text="{Binding DatabaseName}" />
@@ -50,7 +59,7 @@
 
             <Button
                 Width="50"
-                Height="20"
+                Height="25"
                 Command="{Binding CloseCommand}"
                 Content="決定" />
         </StackPanel>

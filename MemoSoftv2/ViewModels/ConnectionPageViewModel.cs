@@ -18,6 +18,12 @@ namespace MemoSoftv2.ViewModels
         public ConnectionPageViewModel(CommentDbContext commentDbContext)
         {
             this.commentDbContext = commentDbContext;
+
+            DatabaseName = Properties.Settings.Default.DatabaseName;
+            Port = Properties.Settings.Default.PortNumber;
+            Host = Properties.Settings.Default.Host;
+            Password = Properties.Settings.Default.Password;
+            UserName = Properties.Settings.Default.UserName;
         }
 
         public event Action<IDialogResult> RequestClose;
@@ -36,6 +42,13 @@ namespace MemoSoftv2.ViewModels
 
         public DelegateCommand CloseCommand => new DelegateCommand(() =>
         {
+            Properties.Settings.Default.DatabaseName = DatabaseName;
+            Properties.Settings.Default.PortNumber = Port;
+            Properties.Settings.Default.Host = Host;
+            Properties.Settings.Default.Password = Password;
+            Properties.Settings.Default.UserName = UserName;
+            Properties.Settings.Default.Save();
+
             commentDbContext.ConnectionStringBuilder.Database = DatabaseName;
             commentDbContext.ConnectionStringBuilder.Port = Port;
             commentDbContext.ConnectionStringBuilder.Host = Host;
