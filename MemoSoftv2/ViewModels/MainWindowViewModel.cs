@@ -42,10 +42,17 @@ namespace MemoSoftv2.ViewModels
                 commentDbContext.Database.EnsureCreated();
                 commentDbContext.AddDefaultGroup(new Group() { Name = "Default Group", Id = 1 });
             }
-            catch (Npgsql.NpgsqlException)
+            catch (Exception e)
             {
-                commentDbContext = null;
-                SystemMessage = "PostgreSQL データベースへの接続に失敗しました";
+                if (e is Npgsql.NpgsqlException or System.Net.Sockets.SocketException)
+                {
+                    commentDbContext = null;
+                    SystemMessage = "PostgreSQL データベースへの接続に失敗しました";
+                }
+                else
+                {
+                    throw;
+                }
             }
 
             if (commentDbContext != null)
