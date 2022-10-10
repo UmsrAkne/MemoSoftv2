@@ -36,29 +36,7 @@ namespace MemoSoftv2.ViewModels
             dialogService.ShowDialog(nameof(ConnectionPage), default, _ => { });
             this.dialogService = dialogService;
             this.commentDbContext = commentDbContext;
-
-            try
-            {
-                commentDbContext.Database.EnsureCreated();
-                commentDbContext.AddDefaultGroup(new Group() { Name = "Default Group", Id = 1 });
-            }
-            catch (Exception e)
-            {
-                if (e is Npgsql.NpgsqlException or System.Net.Sockets.SocketException)
-                {
-                    commentDbContext = null;
-                    SystemMessage = "PostgreSQL データベースへの接続に失敗しました";
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            if (commentDbContext != null)
-            {
-                ReloadCommentCommand.Execute();
-            }
+            Connect(this.commentDbContext);
         }
 
         public string Title
@@ -260,5 +238,33 @@ namespace MemoSoftv2.ViewModels
 
         // ReSharper disable once MemberCanBePrivate.Global
         public List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
+
+        private void Connect(CommentDbContext dbContext)
+        {
+            bool connectionSuccess = true;
+
+            try
+            {
+                dbContext.Database.EnsureCreated();
+                dbContext.AddDefaultGroup(new Group() { Name = "Default Group", Id = 1 });
+            }
+            catch (Exception e)
+            {
+                if (e is Npgsql.NpgsqlException or System.Net.Sockets.SocketException)
+                {
+                    SystemMessage = "PostgreSQL データベースへの接続に失敗しました";
+                    connectionSuccess = false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            if (connectionSuccess)
+            {
+                ReloadCommentCommand.Execute();
+            }
+        }
     }
 }
