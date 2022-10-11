@@ -269,6 +269,7 @@ namespace MemoSoftv2.ViewModels
 
             if (connectionSuccess)
             {
+                SystemMessage = "PostgreSQL データベースへ接続しました";
                 ReloadCommentCommand.Execute();
             }
         }
