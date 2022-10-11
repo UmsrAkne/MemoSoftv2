@@ -44,8 +44,9 @@
 
         <Menu Grid.Row="0">
             <MenuItem Header="File">
-                <MenuItem Command="{Binding ExitCommand}" Header="Exit" />
+                <MenuItem Command="{Binding ShowConnectionPageCommand}" Header="Connect" />
                 <MenuItem Command="{Binding ReloadCommentCommand}" Header="Reload" />
+                <MenuItem Command="{Binding ExitCommand}" Header="Exit" />
             </MenuItem>
 
             <MenuItem Header="Edit">

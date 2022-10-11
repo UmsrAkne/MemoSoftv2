@@ -16,7 +16,7 @@ namespace MemoSoftv2.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private readonly IDialogService dialogService;
-        private readonly CommentDbContext commentDbContext = new CommentDbContext();
+        private readonly DbContextWrapper dbContextWrapper;
 
         private string title = "MemoSoft v2";
         private ObservableCollection<Comment> comments;
@@ -31,27 +31,11 @@ namespace MemoSoftv2.ViewModels
         private bool isTextBoxFocused;
         private Mode mode = Mode.Post;
 
-        public MainWindowViewModel(IDialogService dialogService, CommentDbContext commentDbContext)
+        public MainWindowViewModel(IDialogService dialogService, DbContextWrapper dbContextWrapper)
         {
-            dialogService.ShowDialog(nameof(ConnectionPage), default, _ => { });
             this.dialogService = dialogService;
-            this.commentDbContext = commentDbContext;
-
-            try
-            {
-                commentDbContext.Database.EnsureCreated();
-                commentDbContext.AddDefaultGroup(new Group() { Name = "Default Group", Id = 1 });
-            }
-            catch (Npgsql.NpgsqlException)
-            {
-                commentDbContext = null;
-                SystemMessage = "PostgreSQL データベースへの接続に失敗しました";
-            }
-
-            if (commentDbContext != null)
-            {
-                ReloadCommentCommand.Execute();
-            }
+            this.dbContextWrapper = dbContextWrapper;
+            ShowConnectionPageCommand.Execute();
         }
 
         public string Title
@@ -100,7 +84,7 @@ namespace MemoSoftv2.ViewModels
             set
             {
                 SetProperty(ref selectionGroup, value);
-                commentDbContext.CurrentGroup = value;
+                dbContextWrapper.CommentDbContext.CurrentGroup = value;
             }
         }
 
@@ -113,7 +97,7 @@ namespace MemoSoftv2.ViewModels
 
             if (Mode == Mode.Post)
             {
-                commentDbContext.AddComment(new Comment(InputText, DateTime.Now) { GroupId = SelectionGroup.Id });
+                dbContextWrapper.CommentDbContext.AddComment(new Comment(InputText, DateTime.Now) { GroupId = SelectionGroup.Id });
             }
             else if (Mode == Mode.Edit)
             {
@@ -121,15 +105,15 @@ namespace MemoSoftv2.ViewModels
                 editingComment.Text = InputText;
                 editingComment.IsEditing = false;
                 editingComment = null;
-                commentDbContext.SaveChanges();
+                dbContextWrapper.CommentDbContext.SaveChanges();
             }
             else if (Mode == Mode.TagAddition)
             {
-                commentDbContext.AddTag(new Tag() { Name = InputText });
+                dbContextWrapper.CommentDbContext.AddTag(new Tag() { Name = InputText });
             }
             else if (Mode == Mode.SubComment)
             {
-                commentDbContext.AddComment(new Comment()
+                dbContextWrapper.CommentDbContext.AddComment(new Comment()
                 {
                     IsSubComment = true,
                     Text = InputText,
@@ -155,7 +139,7 @@ namespace MemoSoftv2.ViewModels
         public DelegateCommand<Comment> AddFavoriteCommentCommand => new DelegateCommand<Comment>((comment) =>
         {
             comment.IsFavorite = !comment.IsFavorite;
-            commentDbContext.SaveChanges();
+            dbContextWrapper.CommentDbContext.SaveChanges();
             ReloadCommentCommand.Execute();
         });
 
@@ -174,9 +158,9 @@ namespace MemoSoftv2.ViewModels
 
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
         {
-            Comments = new ObservableCollection<Comment>(commentDbContext.GetComments());
-            Groups = new ObservableCollection<Group>(commentDbContext.GetGroup());
-            Tags = commentDbContext.GetTags();
+            Comments = new ObservableCollection<Comment>(dbContextWrapper.CommentDbContext.GetComments());
+            Groups = new ObservableCollection<Group>(dbContextWrapper.CommentDbContext.GetGroup());
+            Tags = dbContextWrapper.CommentDbContext.GetTags();
 
             if (SelectionGroup == null && Groups.Count != 0)
             {
@@ -195,7 +179,7 @@ namespace MemoSoftv2.ViewModels
         {
             var mediaColor = ((SolidColorBrush)colorBrush).Color;
             SelectionComment.BackgroundColorArgb = System.Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B).ToArgb();
-            commentDbContext.SaveChanges();
+            dbContextWrapper.CommentDbContext.SaveChanges();
         });
 
         public DelegateCommand StartTagAdditionModeCommand => new DelegateCommand(() =>
@@ -217,13 +201,13 @@ namespace MemoSoftv2.ViewModels
                 TagId = param.Id,
             };
 
-            commentDbContext.AddTagMap(tagMap);
+            dbContextWrapper.CommentDbContext.AddTagMap(tagMap);
             ReloadCommentCommand.Execute();
         });
 
         public DelegateCommand AddGroupCommand => new DelegateCommand(() =>
         {
-            commentDbContext.AddGroup(new Group() { Name = "New group" });
+            dbContextWrapper.CommentDbContext.AddGroup(new Group() { Name = "New group" });
             ReloadCommentCommand.Execute();
         });
 
@@ -235,7 +219,7 @@ namespace MemoSoftv2.ViewModels
         public DelegateCommand<Group> ConfirmGroupNameCommand => new DelegateCommand<Group>((group) =>
         {
             group.EditMode = false;
-            commentDbContext.SaveChanges();
+            dbContextWrapper.CommentDbContext.SaveChanges();
         });
 
         public DelegateCommand SubCommentModeCommand => new DelegateCommand(() =>
@@ -249,9 +233,44 @@ namespace MemoSoftv2.ViewModels
             Mode = Mode.SubComment;
         });
 
+        public DelegateCommand ShowConnectionPageCommand => new DelegateCommand(() =>
+        {
+            dialogService.ShowDialog(nameof(ConnectionPage), default, _ => { });
+            Connect(dbContextWrapper);
+        });
+
         public Mode Mode { get => mode; set => SetProperty(ref mode, value); }
 
         // ReSharper disable once MemberCanBePrivate.Global
         public List<Tag> Tags { get => tags; set => SetProperty(ref tags, value); }
+
+        private void Connect(DbContextWrapper wrapper)
+        {
+            bool connectionSuccess = true;
+
+            try
+            {
+                wrapper.RecreateDbContext();
+                wrapper.CommentDbContext.AddDefaultGroup(new Group() { Name = "Default Group", Id = 1 });
+            }
+            catch (Exception e)
+            {
+                if (e is Npgsql.NpgsqlException or System.Net.Sockets.SocketException)
+                {
+                    SystemMessage = "PostgreSQL データベースへの接続に失敗しました";
+                    connectionSuccess = false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            if (connectionSuccess)
+            {
+                SystemMessage = "PostgreSQL データベースへ接続しました";
+                ReloadCommentCommand.Execute();
+            }
+        }
     }
 }

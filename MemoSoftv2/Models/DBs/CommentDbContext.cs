@@ -146,15 +146,6 @@ namespace MemoSoftv2.Models.DBs
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder
-            {
-                Port = 5433,
-                Username = "postgres",
-                Password = "password",
-                Host = "localhost",
-                Database = "testdb",
-            };
-
             optionsBuilder.UseNpgsql(ConnectionStringBuilder.ToString());
         }
     }
