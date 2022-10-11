@@ -239,7 +239,6 @@ namespace MemoSoftv2.ViewModels
             Connect(dbContextWrapper);
         });
 
-
         public Mode Mode { get => mode; set => SetProperty(ref mode, value); }
 
         // ReSharper disable once MemberCanBePrivate.Global

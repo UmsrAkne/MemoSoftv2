@@ -7,6 +7,7 @@ using Prism.Services.Dialogs;
 
 namespace MemoSoftv2.ViewModels
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ConnectionPageViewModel : BindableBase, IDialogAware
     {
         private readonly DbContextWrapper dbContextWrapper;
