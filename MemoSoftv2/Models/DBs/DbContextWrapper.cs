@@ -6,14 +6,16 @@ namespace MemoSoftv2.Models.DBs
     {
         public CommentDbContext CommentDbContext { get; private set; } = new CommentDbContext();
 
-        public void RecreateDbContext(NpgsqlConnectionStringBuilder conBuilder)
+        public NpgsqlConnectionStringBuilder ConnectionStringBuilder { get; set; } = default;
+
+        public void RecreateDbContext()
         {
-            CommentDbContext = new ();
-            CommentDbContext.ConnectionStringBuilder.Username = conBuilder.Username;
-            CommentDbContext.ConnectionStringBuilder.Password = conBuilder.Password;
-            CommentDbContext.ConnectionStringBuilder.Host = conBuilder.Host;
-            CommentDbContext.ConnectionStringBuilder.Port = conBuilder.Port;
-            CommentDbContext.ConnectionStringBuilder.Database = conBuilder.Database;
+            CommentDbContext = new CommentDbContext();
+            CommentDbContext.ConnectionStringBuilder.Username = ConnectionStringBuilder.Username;
+            CommentDbContext.ConnectionStringBuilder.Password = ConnectionStringBuilder.Password;
+            CommentDbContext.ConnectionStringBuilder.Host = ConnectionStringBuilder.Host;
+            CommentDbContext.ConnectionStringBuilder.Port = ConnectionStringBuilder.Port;
+            CommentDbContext.ConnectionStringBuilder.Database = ConnectionStringBuilder.Database;
             CommentDbContext.Database.EnsureCreated();
         }
     }

@@ -24,7 +24,7 @@ namespace MemoSoftv2
             containerRegistry.RegisterDialog<ConnectionPage, ConnectionPageViewModel>();
 
             IUnityContainer container = containerRegistry.GetContainer();
-            container.RegisterSingleton(typeof(CommentDbContext));
+            container.RegisterSingleton(typeof(DbContextWrapper));
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using MemoSoftv2.Models.DBs;
+using Npgsql;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -8,16 +9,16 @@ namespace MemoSoftv2.ViewModels
 {
     public class ConnectionPageViewModel : BindableBase, IDialogAware
     {
-        private readonly CommentDbContext commentDbContext;
+        private readonly DbContextWrapper dbContextWrapper;
         private int port;
         private string databaseName;
         private string host;
         private string password;
         private string userName;
 
-        public ConnectionPageViewModel(CommentDbContext commentDbContext)
+        public ConnectionPageViewModel(DbContextWrapper dbContextWrapper)
         {
-            this.commentDbContext = commentDbContext;
+            this.dbContextWrapper = dbContextWrapper;
 
             DatabaseName = Properties.Settings.Default.DatabaseName;
             Port = Properties.Settings.Default.PortNumber;
@@ -49,11 +50,16 @@ namespace MemoSoftv2.ViewModels
             Properties.Settings.Default.UserName = UserName;
             Properties.Settings.Default.Save();
 
-            commentDbContext.ConnectionStringBuilder.Database = DatabaseName;
-            commentDbContext.ConnectionStringBuilder.Port = Port;
-            commentDbContext.ConnectionStringBuilder.Host = Host;
-            commentDbContext.ConnectionStringBuilder.Password = Password;
-            commentDbContext.ConnectionStringBuilder.Username = UserName;
+            NpgsqlConnectionStringBuilder connectionStringBuilder = new ()
+            {
+                Database = DatabaseName,
+                Port = Port,
+                Host = Host,
+                Password = Password,
+                Username = UserName,
+            };
+
+            dbContextWrapper.ConnectionStringBuilder = connectionStringBuilder;
             RequestClose?.Invoke(default);
         });
 
