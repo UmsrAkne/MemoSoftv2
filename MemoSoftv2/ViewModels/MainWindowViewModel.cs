@@ -68,8 +68,7 @@ namespace MemoSoftv2.ViewModels
         public Comment ParentComment
         {
             get => parentComment;
-            private
-            set
+            private set
             {
                 if (!value.IsSubComment)
                 {
