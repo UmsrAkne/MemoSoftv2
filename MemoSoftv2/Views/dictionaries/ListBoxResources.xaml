@@ -17,7 +17,7 @@
             <TextBox.InputBindings>
                 <KeyBinding
                     Key="Enter"
-                    Command="{Binding Path=DataContext.ConfirmGroupNameCommand, ElementName=window}"
+                    Command="{Binding Path=DataContext.ConfirmGroupNameCommand, ElementName=Window}"
                     CommandParameter="{Binding Content, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                     Modifiers="Ctrl" />
             </TextBox.InputBindings>
