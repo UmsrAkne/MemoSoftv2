@@ -89,7 +89,7 @@ namespace MemoSoftv2.ViewModels
 
         public DelegateCommand PostCommentCommand => new DelegateCommand(() =>
         {
-            if (string.IsNullOrWhiteSpace(InputText))
+            if (string.IsNullOrWhiteSpace(InputText) || !dbContextWrapper.Connection)
             {
                 return;
             }
@@ -157,6 +157,11 @@ namespace MemoSoftv2.ViewModels
 
         public DelegateCommand ReloadCommentCommand => new DelegateCommand(() =>
         {
+            if (!dbContextWrapper.Connection)
+            {
+                return;
+            }
+
             Comments = new ObservableCollection<Comment>(dbContextWrapper.CommentDbContext.GetComments());
             Groups = new ObservableCollection<Group>(dbContextWrapper.CommentDbContext.GetGroup());
             Tags = dbContextWrapper.CommentDbContext.GetTags();
@@ -206,6 +211,11 @@ namespace MemoSoftv2.ViewModels
 
         public DelegateCommand AddGroupCommand => new DelegateCommand(() =>
         {
+            if (!dbContextWrapper.Connection)
+            {
+                return;
+            }
+
             dbContextWrapper.CommentDbContext.AddGroup(new Group() { Name = "New group" });
             ReloadCommentCommand.Execute();
         });
