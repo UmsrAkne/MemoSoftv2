@@ -8,6 +8,8 @@ namespace MemoSoftv2.Models.DBs
 
         public NpgsqlConnectionStringBuilder ConnectionStringBuilder { get; set; } = default;
 
+        public bool Connection => CommentDbContext != null && CommentDbContext.Database.CanConnect();
+
         public void RecreateDbContext()
         {
             CommentDbContext = new CommentDbContext();
