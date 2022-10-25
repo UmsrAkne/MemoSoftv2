@@ -1,16 +1,17 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:MemoSoftv2.Models.Converters">
+    xmlns:converters="clr-namespace:MemoSoftv2.Models.Converters"
+    xmlns:models="clr-namespace:MemoSoftv2.Models">
 
-    <converters:BoolNegativeConverter x:Key="boolNegativeConverter" />
+    <converters:BoolNegativeConverter x:Key="BoolNegativeConverter" />
 
-    <DataTemplate x:Key="ListBoxItemTemplate">
+    <DataTemplate x:Key="ListBoxItemTemplate" DataType="{x:Type models:Group}">
 
         <TextBox
             BorderBrush="Gray"
             BorderThickness="0.5"
-            IsReadOnly="{Binding EditMode, Converter={StaticResource boolNegativeConverter}}"
+            IsReadOnly="{Binding EditMode, Converter={StaticResource BoolNegativeConverter}}"
             Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}">
 
             <TextBox.InputBindings>
